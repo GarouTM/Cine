@@ -10,6 +10,9 @@ module org.example.final_cine_mrk2 {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires org.mongodb.driver.sync.client;
+    requires org.mongodb.driver.core;
+    requires org.mongodb.bson;
 
     opens org.example.final_cine_mrk2 to javafx.fxml;
     exports org.example.final_cine_mrk2;
