@@ -6,27 +6,34 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class main extends Application {
+import java.net.URL;
+
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            // Cargar el FXML del login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
+            // Actualizamos la ruta para que coincida con la carpeta FXML
+            URL fxmlUrl = Main.class.getResource("/FXML/login.fxml");
+            if (fxmlUrl == null) {
+                throw new IllegalStateException("No se puede encontrar el archivo FXML: /FXML/login.fxml");
+            }
+
+            System.out.println("FXML encontrado en: " + fxmlUrl);
+
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Parent root = loader.load();
 
-            // Configurar la escena
             Scene scene = new Scene(root);
-
-            // Configurar el Stage
             primaryStage.setTitle("House Cinema - Login");
             primaryStage.setScene(scene);
-            // Evitar que se pueda redimensionar la ventana de login
             primaryStage.setResizable(false);
             primaryStage.show();
 
         } catch(Exception e) {
+            System.err.println("Error al cargar la aplicación: " + e.getMessage());
             e.printStackTrace();
+            throw e;
         }
     }
 

@@ -128,7 +128,7 @@ public class LoginController implements Initializable {
     @FXML
     private void CreaUsuario(ActionEvent event) {
         try {
-            abrirVentanaModal("/views/crear-usuario.fxml", "Crear Nueva Cuenta");
+            abrirVentanaModal("/FXML/CrearU.fxml", "Crear Nueva Cuenta");
         } catch (IOException e) {
             mostrarAlerta("Error",
                     "Error al abrir la ventana de registro: " + e.getMessage(),
