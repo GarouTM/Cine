@@ -33,9 +33,9 @@ public class LoginController implements Initializable {
     @FXML
     private CheckBox Check_Recordar;
 
-    // La logica de negocio
     private final LN_Usuarios lnUsuarios;
     private static final String CONFIG_FILE = "config.properties";
+    private static final String GMAIL_SUFFIX = "@gmail.com";
 
     public LoginController() {
         this.lnUsuarios = new LN_Usuarios();
@@ -43,17 +43,19 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Cargar un usuario guardado si hay
         cargarUsuarioGuardado();
+        configurarValidacionEmail();
+        configurarNavegacionCampos();
+    }
 
+    private void configurarValidacionEmail() {
         TextField_Email.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty() && !newValue.contains("@gmail.com")) {
-                TextField_Email.setStyle("-fx-border-color: red;");
-            } else {
-                TextField_Email.setStyle("");
-            }
+            boolean esValido = newValue.isEmpty() || newValue.endsWith(GMAIL_SUFFIX);
+            TextField_Email.setStyle(esValido ? "" : "-fx-border-color: red;");
         });
+    }
 
+    private void configurarNavegacionCampos() {
         TextField_Email.setOnAction(e -> TextField_Contraseña.requestFocus());
         TextField_Contraseña.setOnAction(e -> entrar());
     }
@@ -73,55 +75,78 @@ public class LoginController implements Initializable {
         String email = TextField_Email.getText().trim();
         String password = TextField_Contraseña.getText().trim();
 
-        // Unas validaciones basicas
-        if (email.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Error", "Por favor, complete todos los campos", Alert.AlertType.ERROR);
+        if (!validarCamposLogin(email, password)) {
             return;
         }
 
         try {
             Usuario usuario = lnUsuarios.login(email, password);
             if (usuario != null) {
-                if (Check_Recordar.isSelected()) {
-                    guardarUsuario(email);
-                } else {
-                    borrarUsuarioGuardado();
-                }
-
-                abrirPrincipal();
-
-                // Cierra la ventana del login
-                Stage stage = (Stage) btm_Login.getScene().getWindow();
-                stage.close();
+                manejarLoginExitoso(email);
             } else {
-                mostrarAlerta("Error", "Credenciales incorrectas", Alert.AlertType.ERROR);
-                TextField_Contraseña.clear();
-                TextField_Contraseña.requestFocus();
+                manejarLoginFallido();
             }
+        } catch (IllegalArgumentException e) {
+            mostrarAlerta("Error", e.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al iniciar sesión: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    private boolean validarCamposLogin(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()) {
+            mostrarAlerta("Error", "Por favor, complete todos los campos", Alert.AlertType.ERROR);
+            return false;
+        }
+        return true;
+    }
+
+    private void manejarLoginExitoso(String email) {
+        gestionarRecordatorio(email);
+        abrirPrincipal();
+        cerrarVentanaLogin();
+    }
+
+    private void manejarLoginFallido() {
+        TextField_Contraseña.clear();
+        TextField_Contraseña.requestFocus();
+    }
+
+    private void gestionarRecordatorio(String email) {
+        if (Check_Recordar.isSelected()) {
+            guardarUsuario(email);
+        } else {
+            borrarUsuarioGuardado();
+        }
+    }
+
+    private void cerrarVentanaLogin() {
+        Stage stage = (Stage) btm_Login.getScene().getWindow();
+        stage.close();
+    }
+
     @FXML
     private void CreaUsuario(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/registro-usuario.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Crear Nueva Cuenta");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(btm_CrearUsuario.getScene().getWindow());
-            stage.setResizable(false);
-            stage.showAndWait();
-
+            abrirVentanaModal("/views/crear-usuario.fxml", "Crear Nueva Cuenta");
         } catch (IOException e) {
             mostrarAlerta("Error",
                     "Error al abrir la ventana de registro: " + e.getMessage(),
                     Alert.AlertType.ERROR);
         }
+    }
+
+    private void abrirVentanaModal(String fxmlPath, String titulo) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle(titulo);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(btm_CrearUsuario.getScene().getWindow());
+        stage.setResizable(false);
+        stage.showAndWait();
     }
 
     @FXML
@@ -141,7 +166,6 @@ public class LoginController implements Initializable {
             stage.setTitle("House Cinema");
             stage.setMaximized(true);
             stage.show();
-
         } catch (IOException e) {
             mostrarAlerta("Error",
                     "Error al abrir la ventana principal: " + e.getMessage(),
@@ -149,6 +173,7 @@ public class LoginController implements Initializable {
         }
     }
 
+    // Métodos de gestión de configuración
     private void guardarUsuario(String email) {
         Properties prop = new Properties();
         prop.setProperty("email", email);

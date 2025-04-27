@@ -61,7 +61,7 @@ public class Usuario implements Serializable {
         this.saldo = saldo;
     }
 
-    // Método para mostrar el nombre completo
+    // Metodo para mostrar el nombre completo
     public String getNombreCompleto() {
         return nombre + " " + apellido;
     }
