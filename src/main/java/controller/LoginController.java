@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
         try {
             Usuario usuario = lnUsuarios.login(email, password);
             if (usuario != null) {
-                manejarLoginExitoso(email);
+                manejarLoginExitoso(usuario, email);
             } else {
                 manejarLoginFallido();
             }
@@ -101,9 +101,9 @@ public class LoginController implements Initializable {
         return true;
     }
 
-    private void manejarLoginExitoso(String email) {
+    private void manejarLoginExitoso(Usuario usuario, String email) {
         gestionarRecordatorio(email);
-        abrirPrincipal();
+        abrirPrincipal(usuario); // Pasamos el objeto Usuario al abrir el HUB
         cerrarVentanaLogin();
     }
 
@@ -156,11 +156,18 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void abrirPrincipal() {
+    private void abrirPrincipal(Usuario usuario) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/principal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Hub.fxml"));
             Parent root = loader.load();
 
+            // Obtener el controlador del HUB
+            HubUController hubController = loader.getController();
+
+            // Pasar los datos del usuario al HUB
+            hubController.configurarUsuario(usuario.getNombreCompleto(), usuario.getSaldo());
+
+            // Mostrar el HUB
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("House Cinema");

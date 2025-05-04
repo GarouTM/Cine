@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="566.0" prefWidth="718.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HubUController">
+   <children>
+      <!-- Barra Superior -->
+      <HBox alignment="CENTER_LEFT" prefHeight="42.0" style="-fx-background-color: grey; -fx-spacing: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label fx:id="Label_Nombre" prefHeight="18.0" prefWidth="178.0" />
+            <Label fx:id="Label_Dinero" prefHeight="18.0" prefWidth="118.0" />
+            <Label fx:id="Label_ADMIN" text="Label" visible="false" />
+            <Region prefHeight="42.0" prefWidth="293.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="Btm_opc" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" />
+         </children>
+      </HBox>
+
+      <!-- FlowPane para las películas -->
+      <FlowPane fx:id="Flow_Pelis" hgap="10.0" layoutX="11.2" prefHeight="426.0" prefWidth="691.0" style="-fx-background-color: white;" vgap="10.0" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="42.0">
+         <children>
+            <!-- Ejemplo de una película -->
+            <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: Black; -fx-border-width: 1;">
+               <children>
+                  <ImageView fx:id="imagen_peli" fitHeight="225.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="label_peli_titulo" text="Titulo" />
+                  <Label fx:id="label_peli_descripcion" text="Descripcion" />
+                  <Label fx:id="label_peli_genero" text="Genero" />
+                  <Label fx:id="label_peli_director" text="Director" />
+                  <Label fx:id="label_peli_duracion" text="Duracion" />
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+
+      <!-- Botones en la parte inferior -->
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="469.0" prefHeight="66.0" spacing="20.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955">
+         <children>
+            <VBox alignment="CENTER">
+               <Text text="CREAR" />
+               <Button fx:id="btm_crear" mnemonicParsing="false" prefHeight="50.0" prefWidth="75.0" text="CREAR" />
+            </VBox>
+            <VBox alignment="CENTER">
+               <Text text="ELIMINAR" />
+               <Button fx:id="btm_eliminar" mnemonicParsing="false" prefHeight="50.0" prefWidth="75.0" text="ELIMINAR" />
+            </VBox>
+            <VBox alignment="CENTER">
+               <Text text="MODIFICAR" />
+               <Button fx:id="btm_modificar" mnemonicParsing="false" prefHeight="50.0" prefWidth="152.0" text="MODIFICAR" />
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

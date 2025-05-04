@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="359.0" prefWidth="523.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CrearPController">
+   <children>
+      <ScrollPane layoutX="267.0" layoutY="13.0" prefHeight="338.0" prefWidth="246.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="746.0" prefWidth="235.0">
+               <children>
+                  <Text layoutX="7.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Crear Nueva Pelicula" wrappingWidth="221.53485107421875">
+                     <font>
+                        <Font name="House M.D." size="13.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titulo:" />
+                  <TextField fx:id="TextField_Titulo" layoutX="14.0" layoutY="58.0" promptText="Inserte titulo" />
+                  <VBox alignment="CENTER" layoutX="6.0" layoutY="115.0" prefHeight="208.0" prefWidth="222.0" style="-fx-border-color: black;">
+                     <children>
+                        <ImageView fx:id="ImageView_1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <Button fx:id="Btm_Imagen" mnemonicParsing="false" text="INSERTAR IMAGEN" />
+                     </children>
+                  </VBox>
+                  <Text layoutX="14.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen:" />
+                  <Text layoutX="12.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Director:" />
+                  <TextField fx:id="TextField_Director" layoutX="14.0" layoutY="357.0" />
+                  <Text layoutX="18.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Año:" />
+                  <TextField fx:id="TextField_Año" layoutX="14.0" layoutY="416.0" />
+                  <Text layoutX="18.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genero:" />
+                  <TextField fx:id="TextField_Genero" layoutX="14.0" layoutY="475.0" />
+                  <Text layoutX="14.0" layoutY="578.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion:" />
+                  <Button fx:id="btm_confirmar" layoutX="36.0" layoutY="688.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="162.0" text="CONFIRMAR" />
+                  <TextArea fx:id="Text_Area_Descripcion" layoutX="11.0" layoutY="588.0" prefHeight="89.0" prefWidth="206.0" />
+                  <TextField fx:id="TextField_Duracion" layoutX="14.0" layoutY="526.0" />
+                  <Text layoutX="17.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion:" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <ImageView fitHeight="338.0" fitWidth="246.0" layoutX="14.0" layoutY="13.0">
+         <image>
+            <Image url="@../org/example/final_cine_mrk2/housetemp1.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

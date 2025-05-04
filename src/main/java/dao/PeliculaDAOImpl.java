@@ -29,7 +29,7 @@ public class PeliculaDAOImpl implements IPeliculaDAO {
                     .append("anio", pelicula.getAnio())
                     .append("genero", pelicula.getGenero())
                     .append("duracion", pelicula.getDuracion())
-                    .append("sinopsis", pelicula.getSinopsis())
+                    .append("descripcion", pelicula.getDescripcion())
                     .append("rutaImagen", pelicula.getRutaImagen())
                     .append("precio", pelicula.getPrecio());
 
@@ -83,7 +83,7 @@ public class PeliculaDAOImpl implements IPeliculaDAO {
                     .append("anio", pelicula.getAnio())
                     .append("genero", pelicula.getGenero())
                     .append("duracion", pelicula.getDuracion())
-                    .append("sinopsis", pelicula.getSinopsis())
+                    .append("descripcion", pelicula.getDescripcion()) // Actualizado
                     .append("rutaImagen", pelicula.getRutaImagen())
                     .append("precio", pelicula.getPrecio());
 
@@ -119,9 +119,8 @@ public class PeliculaDAOImpl implements IPeliculaDAO {
                 doc.getInteger("anio"),
                 doc.getString("genero"),
                 doc.getDouble("duracion"),
-                doc.getString("sinopsis"),
-                doc.getString("rutaImagen"),
-                doc.getDouble("precio")
+                doc.getString("descripcion"),
+                doc.getString("rutaImagen")
         );
     }
 }

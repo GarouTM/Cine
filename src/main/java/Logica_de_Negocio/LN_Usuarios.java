@@ -119,7 +119,7 @@ public class LN_Usuarios {
 
     private void validarFormatoEmail(String gmail) {
         if (gmail == null || !GMAIL_PATTERN.matcher(gmail).matches()) {
-            throw new IllegalArgumentException("El correo debe ser una dirección de Gmail válida");
+            throw new IllegalArgumentException("No existe ese email intentalo de nuevo");
         }
     }
 

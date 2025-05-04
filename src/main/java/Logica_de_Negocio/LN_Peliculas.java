@@ -12,6 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LN_Peliculas {
     private final PeliculaDAOImpl peliculaDAO;
@@ -31,10 +33,10 @@ public class LN_Peliculas {
     }
 
     public void crearPelicula(String titulo, String director, int anio, String genero,
-                              double duracion, String sinopsis, File imagenFile, double precio) {
+                              String duracionTexto, String descripcion, File imagenFile) {
         try {
             // Validar datos
-            validarDatosPelicula(titulo, director, anio, duracion, precio);
+            double duracion = validarDatosPelicula(titulo, director, anio, duracionTexto);
 
             // Generar ID
             String id = peliculaDAO.generarSiguienteId();
@@ -43,8 +45,7 @@ public class LN_Peliculas {
             String rutaImagen = manejarImagen(id, imagenFile);
 
             // Crear y guardar la película
-            Pelicula pelicula = new Pelicula(id, titulo, director, anio, genero,
-                    duracion, sinopsis, rutaImagen, precio);
+            Pelicula pelicula = new Pelicula(id, titulo, director, anio, genero, duracion, descripcion, rutaImagen);
             peliculaDAO.insertar(pelicula);
             mostrarAlerta("Éxito", "Película creada correctamente.", Alert.AlertType.INFORMATION);
         } catch (Exception e) {
@@ -69,7 +70,7 @@ public class LN_Peliculas {
         return filename.substring(filename.lastIndexOf(".")).toLowerCase();
     }
 
-    private void validarDatosPelicula(String titulo, String director, int anio, double duracion, double precio) {
+    private double validarDatosPelicula(String titulo, String director, int anio, String duracionTexto) {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new IllegalArgumentException("El título no puede estar vacío");
         }
@@ -79,12 +80,61 @@ public class LN_Peliculas {
         if (anio < 1895 || anio > 2030) {
             throw new IllegalArgumentException("Año inválido");
         }
-        if (duracion <= 0) {
-            throw new IllegalArgumentException("La duración debe ser mayor que 0");
+        if (duracionTexto == null || duracionTexto.trim().isEmpty()) {
+            throw new IllegalArgumentException("La duración no puede estar vacía");
         }
-        if (precio < 0) {
-            throw new IllegalArgumentException("El precio no puede ser negativo");
+
+        // Validar y convertir la duración a minutos
+        return convertirDuracionAMinutos(duracionTexto);
+    }
+
+    private double convertirDuracionAMinutos(String duracionTexto) {
+        // Expresiones regulares para varios formatos
+        Pattern formatoHMin = Pattern.compile("(\\d+)H\\s*(\\d+)?MIN?", Pattern.CASE_INSENSITIVE);
+        Pattern formatoHoraYMedia = Pattern.compile("(\\d+)\\s*h(o)?r?a?\\s*y\\s*(media|1/2)", Pattern.CASE_INSENSITIVE);
+        Pattern formatoHorasYMinutos = Pattern.compile("(\\d+):(\\d+)");
+        Pattern formatoSoloHoras = Pattern.compile("(\\d+)\\s*h(o)?r?a?s?", Pattern.CASE_INSENSITIVE);
+        Pattern formatoSoloMinutos = Pattern.compile("(\\d+)\\s*m(i)?n?(utos)?", Pattern.CASE_INSENSITIVE);
+
+        Matcher matcher;
+
+        // 1. Formato: "1H 20MIN"
+        matcher = formatoHMin.matcher(duracionTexto);
+        if (matcher.matches()) {
+            int horas = Integer.parseInt(matcher.group(1));
+            int minutos = matcher.group(2) != null ? Integer.parseInt(matcher.group(2)) : 0;
+            return horas * 60 + minutos;
         }
+
+        // 2. Formato: "1 hora y media"
+        matcher = formatoHoraYMedia.matcher(duracionTexto);
+        if (matcher.matches()) {
+            int horas = Integer.parseInt(matcher.group(1));
+            return horas * 60 + 30; // Media hora equivale a 30 minutos
+        }
+
+        // 3. Formato: "1:30" (1 hora y 30 minutos)
+        matcher = formatoHorasYMinutos.matcher(duracionTexto);
+        if (matcher.matches()) {
+            int horas = Integer.parseInt(matcher.group(1));
+            int minutos = Integer.parseInt(matcher.group(2));
+            return horas * 60 + minutos;
+        }
+
+        // 4. Formato: "2 horas"
+        matcher = formatoSoloHoras.matcher(duracionTexto);
+        if (matcher.matches()) {
+            int horas = Integer.parseInt(matcher.group(1));
+            return horas * 60;
+        }
+
+        // 5. Formato: "90 minutos"
+        matcher = formatoSoloMinutos.matcher(duracionTexto);
+        if (matcher.matches()) {
+            return Double.parseDouble(matcher.group(1));
+        }
+
+        throw new IllegalArgumentException("El formato de 'Duración' no es válido. Ejemplos: '1H 20MIN', '1 hora y media', '1:30', '90 minutos'.");
     }
 
     public void eliminarPelicula(Pelicula pelicula) {

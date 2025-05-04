@@ -1,6 +1,8 @@
 package modelo;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 public class Pelicula implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -11,23 +13,20 @@ public class Pelicula implements Serializable {
     private int anio;
     private String genero;
     private double duracion; // en minutos
-    private String sinopsis;
+    private String descripcion; // Nueva variable añadida
     private String rutaImagen; // Ruta donde se guarda la imagen
-    private double precio;
 
     // Constructor
     public Pelicula(String id, String titulo, String director, int anio,
-                    String genero, double duracion, String sinopsis,
-                    String rutaImagen, double precio) {
+                    String genero, double duracion, String descripcion, String rutaImagen) {
         this.id = id;
         this.titulo = titulo;
         this.director = director;
         this.anio = anio;
         this.genero = genero;
         this.duracion = duracion;
-        this.sinopsis = sinopsis;
+        this.descripcion = descripcion;
         this.rutaImagen = rutaImagen;
-        this.precio = precio;
     }
 
     // Getters y Setters
@@ -79,12 +78,12 @@ public class Pelicula implements Serializable {
         this.duracion = duracion;
     }
 
-    public String getSinopsis() {
-        return sinopsis;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setSinopsis(String sinopsis) {
-        this.sinopsis = sinopsis;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getRutaImagen() {
@@ -95,12 +94,19 @@ public class Pelicula implements Serializable {
         this.rutaImagen = rutaImagen;
     }
 
+    /**
+     * Calcula el precio dinámicamente.
+     * El precio es $7 siempre, salvo los miércoles que tiene un 50% de descuento.
+     *
+     * @return El precio de la película.
+     */
     public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
+        LocalDate today = LocalDate.now();
+        DayOfWeek dayOfWeek = today.getDayOfWeek();
+        if (dayOfWeek == DayOfWeek.WEDNESDAY) {
+            return 7.0 * 0.5; // Descuento del 50% los miércoles
+        }
+        return 7.0; // Precio normal
     }
 
     @Override
@@ -112,7 +118,9 @@ public class Pelicula implements Serializable {
                 ", anio=" + anio +
                 ", genero='" + genero + '\'' +
                 ", duracion=" + duracion +
-                ", precio=" + precio +
+                ", descripcion='" + descripcion + '\'' +
+                ", rutaImagen='" + rutaImagen + '\'' +
+                ", precio=" + getPrecio() +
                 '}';
     }
 
