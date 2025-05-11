@@ -1,0 +1,55 @@
+/* Barra superior */
+.hbox {
+    -fx-background-color: #808080; /* Gris */
+    -fx-spacing: 20px;
+    -fx-padding: 10px;
+    -fx-alignment: center-left;
+}
+
+.hbox Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* FlowPane para las películas */
+.flow-pane {
+    -fx-background-color: white;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+    -fx-padding: 10px;
+}
+
+/* Elementos de película (VBox) */
+.vbox {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-alignment: center;
+}
+
+.vbox:hover {
+    -fx-background-color: #f5f5f5; /* Fondo más claro al pasar el ratón */
+    -fx-border-color: #4CAF50; /* Resaltar el borde */
+}
+
+.vbox Label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333; /* Gris oscuro */
+}
+
+/* Botones en la parte inferior */
+.hbox Button {
+    -fx-background-color: #4CAF50; /* Verde */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+.hbox Button:hover {
+    -fx-background-color: #45A049; /* Verde más oscuro al pasar el ratón */
+}

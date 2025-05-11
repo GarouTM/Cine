@@ -31,7 +31,7 @@
                   <Font name="Verdana Pro Bold" size="11.0" />
                </font>
             </Text>
-            <Button fx:id="btm_Login" layoutX="9.0" layoutY="285.0" mnemonicParsing="false" onAction="#entrar" prefHeight="32.0" prefWidth="224.0" style="-fx-background-color: #bf2d2d;" text="Log in">
+            <Button fx:id="btm_Login" layoutX="9.0" layoutY="285.0" mnemonicParsing="false" onAction="#entrar" prefHeight="32.0" prefWidth="224.0" style="-fx-background-color: #bf2d2d; -fx-border-color: black;" text="Log in">
                <font>
                   <Font name="Roboto Regular" size="13.0" />
                </font>

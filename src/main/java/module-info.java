@@ -14,6 +14,7 @@ module org.example.final_cine_mrk2 {
     requires org.mongodb.driver.sync.client;
     requires org.mongodb.driver.core;
     requires org.mongodb.bson;
+    requires com.github.librepdf.openpdf;
 
     opens Main to javafx.graphics, javafx.fxml;
     opens controller to javafx.fxml;

@@ -2,32 +2,43 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="566.0" prefWidth="718.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HubUController">
+<AnchorPane prefHeight="577.0" prefWidth="719.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HubUController">
    <children>
       <!-- Barra Superior -->
-      <HBox alignment="CENTER_LEFT" prefHeight="42.0" style="-fx-background-color: grey; -fx-spacing: 20;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="42.0" style="-fx-border-color: black; -fx-spacing: 20; -fx-background-color: #003465;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="Label_Nombre" prefHeight="18.0" prefWidth="178.0" />
-            <Label fx:id="Label_Dinero" prefHeight="18.0" prefWidth="118.0" />
-            <Label fx:id="Label_ADMIN" text="Label" visible="false" />
-            <Region prefHeight="42.0" prefWidth="293.0" HBox.hgrow="ALWAYS" />
+            <Label fx:id="Label_Nombre" prefHeight="27.0" prefWidth="182.0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+            <Label fx:id="Label_Dinero" prefHeight="27.0" prefWidth="170.0" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+            <Label fx:id="Label_ADMIN" text="Label" textFill="WHITE" visible="false">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+            <Region prefHeight="41.0" prefWidth="222.0" HBox.hgrow="ALWAYS" />
             <Button fx:id="Btm_opc" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" />
          </children>
       </HBox>
 
       <!-- FlowPane para las películas -->
-      <FlowPane fx:id="Flow_Pelis" hgap="10.0" layoutX="11.2" prefHeight="426.0" prefWidth="691.0" style="-fx-background-color: white;" vgap="10.0" AnchorPane.bottomAnchor="180.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="42.0">
+      <FlowPane fx:id="Flow_Pelis" hgap="10.0" layoutX="11.0" layoutY="58.0" prefHeight="426.0" prefWidth="691.0" style="-fx-background-color: white; -fx-border-color: black;" vgap="10.0" AnchorPane.bottomAnchor="164.39999999999998" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.399999999999977" AnchorPane.topAnchor="58.0">
          <children>
             <!-- Ejemplo de una película -->
-            <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: Black; -fx-border-width: 1;">
+            <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: #B3A900; -fx-border-width: 1;">
                <children>
                   <ImageView fx:id="imagen_peli" fitHeight="225.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true" />
                   <Label fx:id="label_peli_titulo" text="Titulo" />
@@ -39,23 +50,38 @@
             </VBox>
          </children>
       </FlowPane>
-
-      <!-- Botones en la parte inferior -->
-      <HBox alignment="CENTER" layoutX="10.0" layoutY="469.0" prefHeight="66.0" spacing="20.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955">
-         <children>
-            <VBox alignment="CENTER">
-               <Text text="CREAR" />
-               <Button fx:id="btm_crear" mnemonicParsing="false" prefHeight="50.0" prefWidth="75.0" text="CREAR" />
-            </VBox>
-            <VBox alignment="CENTER">
-               <Text text="ELIMINAR" />
-               <Button fx:id="btm_eliminar" mnemonicParsing="false" prefHeight="50.0" prefWidth="75.0" text="ELIMINAR" />
-            </VBox>
-            <VBox alignment="CENTER">
-               <Text text="MODIFICAR" />
-               <Button fx:id="btm_modificar" mnemonicParsing="false" prefHeight="50.0" prefWidth="152.0" text="MODIFICAR" />
-            </VBox>
-         </children>
-      </HBox>
+      <Button fx:id="btm_eliminar" layoutX="268.0" layoutY="511.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #8F0016; -fx-border-color: black;" />
+      <Button fx:id="btm_modificar" layoutX="490.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #20009E; -fx-border-color: black;" />
+      <Text layoutX="28.0" layoutY="499.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">
+         <font>
+            <Font name="House M.D." size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="btm_crear" layoutX="41.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #1DB00D; -fx-border-color: black;" />
+      <ImageView fitHeight="73.0" fitWidth="75.0" layoutX="101.0" layoutY="515.0">
+         <image>
+            <Image url="@../org/example/final_cine_mrk2/412785.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="303.0" layoutY="498.0" text="Eliminar  " wrappingWidth="125.1956787109375">
+         <font>
+            <Font name="House M.D." size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="65.0" fitWidth="69.0" layoutX="331.0" layoutY="518.0">
+         <image>
+            <Image url="@../org/example/final_cine_mrk2/1214594.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="516.0" layoutY="499.0" text="Modificar" wrappingWidth="143.595703125">
+         <font>
+            <Font name="House M.D." size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="73.0" fitWidth="69.0" layoutX="553.0" layoutY="514.0">
+         <image>
+            <Image url="@../org/example/final_cine_mrk2/32355.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
