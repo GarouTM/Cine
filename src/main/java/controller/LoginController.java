@@ -75,7 +75,8 @@ public class LoginController implements Initializable {
         String email = TextField_Email.getText().trim();
         String password = TextField_Contraseña.getText().trim();
 
-        if (!validarCamposLogin(email, password)) {
+        if (email.isEmpty() || password.isEmpty()) {
+            mostrarAlerta("Error", "Por favor, complete todos los campos", Alert.AlertType.ERROR);
             return;
         }
 
@@ -85,20 +86,11 @@ public class LoginController implements Initializable {
                 manejarLoginExitoso(usuario, email);
             } else {
                 manejarLoginFallido();
+                mostrarAlerta("Error", "Credenciales incorrectas", Alert.AlertType.ERROR);
             }
-        } catch (IllegalArgumentException e) {
-            mostrarAlerta("Error", e.getMessage(), Alert.AlertType.ERROR);
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al iniciar sesión: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
-
-    private boolean validarCamposLogin(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) {
-            mostrarAlerta("Error", "Por favor, complete todos los campos", Alert.AlertType.ERROR);
-            return false;
-        }
-        return true;
     }
 
     private void manejarLoginExitoso(Usuario usuario, String email) {
@@ -165,7 +157,7 @@ public class LoginController implements Initializable {
             HubUController hubController = loader.getController();
 
             // Pasar los datos del usuario al HUB
-            hubController.configurarUsuario(usuario.getNombreCompleto(), usuario.getSaldo());
+            hubController.configurarUsuario(usuario.getNombreCompleto(), usuario.getSaldo(), usuario.getGmail());
 
             // Mostrar el HUB
             Stage stage = new Stage();
@@ -180,7 +172,6 @@ public class LoginController implements Initializable {
         }
     }
 
-    // Métodos de gestión de configuración
     private void guardarUsuario(String email) {
         Properties prop = new Properties();
         prop.setProperty("email", email);

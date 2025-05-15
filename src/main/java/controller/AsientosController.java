@@ -20,6 +20,8 @@ import java.util.Map;
 
 public class AsientosController {
 
+    private HubUController hubController;
+
     @FXML
     private GridPane gridAsientos;
 
@@ -48,10 +50,14 @@ public class AsientosController {
     private double costePorAsiento; // Precio por asiento basado en el precio de la película
     private double costeTotal = 0.0; // Coste acumulado de los asientos seleccionados
 
-    private String nombreUsuario;
+    private String emailUsuario; // Se cambió a "emailUsuario" para reflejar el correo electrónico
     private double dineroUsuario;
     private String nombrePelicula;
     private String horarioSeleccionado;
+
+    public void setHubController(HubUController hubController) {
+        this.hubController = hubController;
+    }
 
     @FXML
     public void initialize() {
@@ -92,7 +98,13 @@ public class AsientosController {
         Label_DineroUsuario.setText(String.format("Dinero: $%.2f", dineroUsuario));
 
         // Actualizar la base de datos
-        actualizarSaldoEnBaseDeDatos(nombreUsuario, dineroUsuario);
+        actualizarSaldoEnBaseDeDatos(emailUsuario, dineroUsuario);
+
+
+        // Actualizar el saldo en HubUController
+        if (hubController != null) {
+            hubController.actualizarSaldo(dineroUsuario);
+        }
 
         // Generar la factura en PDF
         try {
@@ -123,8 +135,8 @@ public class AsientosController {
     /**
      * Actualiza el saldo del usuario en la base de datos.
      *
-     * @param emailUsuario Nombre del gmail
-     * @param nuevoSaldo Nuevo saldo del usuario.
+     * @param emailUsuario Correo electrónico del usuario.
+     * @param nuevoSaldo   Nuevo saldo del usuario.
      */
     private void actualizarSaldoEnBaseDeDatos(String emailUsuario, double nuevoSaldo) {
         try {
@@ -147,7 +159,7 @@ public class AsientosController {
     }
 
     /**
-     * Genera un archivo PDF con la factura de la compra.
+     * Genera un archivo PDF con la factura de la compra utilizando una plantilla estructurada.
      */
     private void generarFacturaPDF() throws Exception {
         // Crear directorio para facturas si no existe
@@ -158,24 +170,59 @@ public class AsientosController {
         }
 
         // Ruta del archivo PDF
-        String filePath = facturasPath + "/Factura_" + nombreUsuario + ".pdf";
+        String filePath = facturasPath + "/Factura_" + emailUsuario + ".pdf";
 
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream(filePath));
 
         document.open();
-        document.add(new Paragraph("Factura de Compra"));
-        document.add(new Paragraph("Usuario: " + nombreUsuario));
-        document.add(new Paragraph("Película: " + nombrePelicula));
-        document.add(new Paragraph("Horario: " + horarioSeleccionado));
-        document.add(new Paragraph(String.format("Precio Total: $%.2f", costeTotal)));
 
-        // Lista de asientos seleccionados
-        document.add(new Paragraph("Asientos seleccionados:"));
+        // Encabezado de la factura
+        com.lowagie.text.Font headerFont = new com.lowagie.text.Font(com.lowagie.text.Font.HELVETICA, 18, com.lowagie.text.Font.BOLD);
+        Paragraph header = new Paragraph("Factura de Compra", headerFont);
+        header.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(header);
+
+        document.add(new Paragraph("\n")); // Espaciado
+
+        // Información del usuario
+        com.lowagie.text.Font userInfoFont = new com.lowagie.text.Font(com.lowagie.text.Font.HELVETICA, 12, com.lowagie.text.Font.NORMAL);
+        document.add(new Paragraph("Usuario: " + emailUsuario, userInfoFont));
+        document.add(new Paragraph("Película: " + nombrePelicula, userInfoFont));
+        document.add(new Paragraph("Horario: " + horarioSeleccionado, userInfoFont));
+
+        document.add(new Paragraph("\n")); // Espaciado
+
+        // Tabla de asientos seleccionados
+        com.lowagie.text.pdf.PdfPTable table = new com.lowagie.text.pdf.PdfPTable(2); // 2 columnas
+        table.setWidthPercentage(100); // Ancho de la tabla
+        table.setSpacingBefore(10f); // Espaciado antes de la tabla
+        table.setSpacingAfter(10f); // Espaciado después de la tabla
+
+        // Encabezados de la tabla
+        com.lowagie.text.pdf.PdfPCell cell1 = new com.lowagie.text.pdf.PdfPCell(new Paragraph("Asiento"));
+        com.lowagie.text.pdf.PdfPCell cell2 = new com.lowagie.text.pdf.PdfPCell(new Paragraph("Precio"));
+
+        cell1.setHorizontalAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        cell2.setHorizontalAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        table.addCell(cell1);
+        table.addCell(cell2);
+
+        // Agregar asientos seleccionados y sus precios
         List<String> asientosSeleccionados = obtenerAsientosSeleccionados();
         for (String asiento : asientosSeleccionados) {
-            document.add(new Paragraph(asiento));
+            table.addCell(asiento);
+            table.addCell(String.format("$%.2f", costePorAsiento));
         }
+
+        document.add(table);
+
+        // Total de la compra
+        com.lowagie.text.Font totalFont = new com.lowagie.text.Font(com.lowagie.text.Font.HELVETICA, 14, com.lowagie.text.Font.BOLD);
+        Paragraph total = new Paragraph(String.format("Total: $%.2f", costeTotal), totalFont);
+        total.setAlignment(Paragraph.ALIGN_RIGHT);
+        document.add(total);
 
         document.close();
 
@@ -210,14 +257,14 @@ public class AsientosController {
     /**
      * Configura los datos del usuario y la película.
      *
-     * @param emailUsuario Nombre del gmail.
-     * @param dineroUsuario Dinero disponible del usuario.
-     * @param nombrePelicula Nombre de la película.
-     * @param precioPelicula Precio por asiento basado en la película.
+     * @param emailUsuario        Correo electrónico del usuario.
+     * @param dineroUsuario       Dinero disponible del usuario.
+     * @param nombrePelicula      Nombre de la película.
+     * @param precioPelicula      Precio por asiento basado en la película.
      * @param horarioSeleccionado Horario seleccionado de la película.
      */
     public void configurarAsientos(String emailUsuario, double dineroUsuario, String nombrePelicula, double precioPelicula, String horarioSeleccionado) {
-        this.nombreUsuario = emailUsuario; // Usa el correo electrónico como identificador
+        this.emailUsuario = emailUsuario; // Usa el correo electrónico como identificador
         this.dineroUsuario = dineroUsuario;
         this.nombrePelicula = nombrePelicula;
         this.horarioSeleccionado = horarioSeleccionado;

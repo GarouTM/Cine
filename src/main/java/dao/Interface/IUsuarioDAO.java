@@ -13,6 +13,8 @@ public interface IUsuarioDAO {
 
     void actualizarSaldo(String gmail, double nuevoSaldo);
 
+    double obtenerSaldo(String gmail);
+
     List<Usuario> obtenerTodosUsuarios();
 
     boolean existeUsuario(String gmail);

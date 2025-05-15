@@ -105,6 +105,21 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
     }
 
     @Override
+    public double obtenerSaldo(String gmail) {
+        try {
+            Document doc = collection.find(Filters.eq("_id", gmail)).first();
+            if (doc == null) {
+                throw new RuntimeException("Usuario no encontrado: " + gmail);
+            }
+            return doc.getDouble("saldo");
+        } catch (MongoException e) {
+            throw new RuntimeException("Error de conexión con la base de datos: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener el saldo: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<Usuario> obtenerTodosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         try {

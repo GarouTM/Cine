@@ -1,13 +1,14 @@
 package controller;
 
 import Logica_de_Negocio.LN_Peliculas;
+import dao.UsuarioDAOImpl;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import dao.UsuarioDAOImpl;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +20,8 @@ import modelo.Pelicula;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HubUController {
 
@@ -32,26 +35,39 @@ public class HubUController {
     private Label Label_Dinero;
 
     @FXML
-    private Button btm_crear; // Botón para crear película
+    private Button btm_crear;
+
+    @FXML
+    private Button btm_eliminar;
 
     private final LN_Peliculas lnPeliculas = new LN_Peliculas();
+    private String emailUsuario; // Correo electrónico del usuario
+    private double dineroUsuario;
+    private Timer timer; // Timer para la actualización periódica del saldo
+
+    private Pelicula peliculaSeleccionada;
 
     @FXML
     public void initialize() {
         cargarPeliculas();
         btm_crear.setOnAction(event -> abrirCrearPelicula());
+        btm_eliminar.setOnAction(event -> eliminarPS());
         aplicarEstiloCSS();
+        iniciarActualizacionSaldo();
     }
 
     /**
-     * Configura al usuario para mostrar su nombre y saldo en la barra superior.
+     * Configura al usuario para mostrar su nombre, saldo y correo electrónico en la barra superior.
      *
      * @param nombre Nombre del usuario.
      * @param dinero Saldo del usuario.
+     * @param email Correo electrónico del usuario.
      */
-    public void configurarUsuario(String nombre, double dinero) {
+    public void configurarUsuario(String nombre, double dinero, String email) {
         Label_Nombre.setText(nombre);
         Label_Dinero.setText(String.format("Dinero: $%.2f", dinero));
+        this.emailUsuario = email; // Guarda el correo electrónico
+        this.dineroUsuario = dinero;
     }
 
     /**
@@ -120,17 +136,87 @@ public class HubUController {
         // Añadir todos los datos al VBox
         peliculaBox.getChildren().addAll(imagenPelicula, tituloPelicula, scrollDescripcion, generoPelicula, directorPelicula, duracionPelicula);
 
-        // Hacer el VBox clickeable para abrir la ventana de horarios
-        peliculaBox.setOnMouseClicked(event -> abrirSeleccionHorarios(pelicula));
+        // Configurar evento de clic para manejar selección y doble clic
+        peliculaBox.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1) {
+                // Seleccionar película con un solo clic
+                peliculaSeleccionada = pelicula;
+                Flow_Pelis.getChildren().forEach(node -> {
+                    if (node instanceof VBox) {
+                        node.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: Black; -fx-border-width: 1;");
+                    }
+                });
+                peliculaBox.setStyle("-fx-background-color: #d3d3d3; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: Black; -fx-border-width: 1;");
+            } else if (event.getClickCount() == 2) {
+                // Abrir la ventana de horarios con un doble clic
+                abrirSeleccionHorarios(pelicula);
+            }
+        });
 
         return peliculaBox;
     }
 
+    private void iniciarActualizacionSaldo() {
+        timer = new Timer(true); // "true" para que sea un hilo de demonio y no bloquee la aplicación al salir
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                // Actualizar el saldo en el hilo de la interfaz gráfica
+                Platform.runLater(() -> {
+                    actualizarSaldoBD();
+                });
+            }
+        }, 0, 5000); // Actualizar cada 5 segundos
+    }
+
+    private void actualizarSaldoBD() {
+        try {
+            // Obtener el saldo actualizado desde la base de datos
+            UsuarioDAOImpl usuarioDAO = new UsuarioDAOImpl(); // DAO o lógica para obtener datos del usuario
+            double nuevoSaldo = usuarioDAO.obtenerSaldo(emailUsuario); // Metodo para obtener el saldo del usuario
+
+            // Si el saldo es diferente, actualizar la interfaz
+            if (nuevoSaldo != dineroUsuario) {
+                dineroUsuario = nuevoSaldo;
+                Label_Dinero.setText(String.format("Dinero: $%.2f", nuevoSaldo));
+            }
+        } catch (Exception e) {
+            mostrarError("Error al actualizar el saldo: " + e.getMessage());
+        }
+    }
+
     /**
-     * Abre la ventana de selección de horarios para la película seleccionada.
-     *
-     * @param pelicula Película seleccionada.
+     * Elimina la película seleccionada.
      */
+    private void eliminarPS() {
+        if (peliculaSeleccionada == null) {
+            mostrarError("Por favor, seleccione una película para eliminar.");
+            return;
+        }
+
+        if (!confirmarEliminacion()) {
+            return; // El usuario canceló la eliminación
+        }
+
+        try {
+            lnPeliculas.eliminarPelicula(peliculaSeleccionada); // Llama al método de lógica para eliminar la película
+            cargarPeliculas(); // Recarga la lista de películas
+            peliculaSeleccionada = null; // Reinicia la selección
+        } catch (Exception e) {
+            mostrarError("Error al eliminar la película: " + e.getMessage());
+        }
+    }
+
+    private boolean confirmarEliminacion() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar eliminación");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Estás seguro de que deseas eliminar esta película?");
+        return alert.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
+    }
+
+
+
     /**
      * Abre la ventana de selección de horarios para la película seleccionada.
      *
@@ -143,14 +229,14 @@ public class HubUController {
 
             HorariosController controller = loader.getController();
 
-            // Convertir la duración de double a int y manejar el saldo correctamente
-            controller.configurarPelicula(
-                    pelicula.getRutaImagen(),
+            // Pasar los datos necesarios al controlador
+            controller.configurarDatosUsuario(
+                    emailUsuario,
                     pelicula.getTitulo(),
-                    (int) pelicula.getDuracion(), // Conversión de double a int
-                    Label_Nombre.getText(),
-                    Double.parseDouble(Label_Dinero.getText().replace("Dinero: $", "").replace(",", ".")), // Reemplazar ',' por '.'
-                    pelicula.getPrecio()
+                    pelicula.getPrecio(),
+                    (int) pelicula.getDuracion(),
+                    pelicula.getRutaImagen(), // Pasar la ruta de la imagen
+                    dineroUsuario // Pasar el saldo del usuario
             );
 
             Stage stage = new Stage();
@@ -162,6 +248,7 @@ public class HubUController {
             e.printStackTrace();
         }
     }
+
     /**
      * Abre la ventana para crear una nueva película.
      */
@@ -186,6 +273,11 @@ public class HubUController {
         }
     }
 
+    public void actualizarSaldo(double nuevoSaldo) {
+        this.dineroUsuario = nuevoSaldo;
+        Label_Dinero.setText(String.format("Dinero: $%.2f", nuevoSaldo));
+    }
+
     private void aplicarEstiloCSS() {
         try {
             // Obtener la escena principal
@@ -201,12 +293,20 @@ public class HubUController {
         }
     }
 
+
+
     /**
      * Muestra un mensaje de error en la consola.
      *
      * @param mensaje Mensaje de error.
      */
     private void mostrarError(String mensaje) {
-        System.err.println("Error: " + mensaje);
+        javafx.application.Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(mensaje);
+            alert.showAndWait();
+        });
     }
 }

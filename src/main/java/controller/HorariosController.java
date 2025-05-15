@@ -42,30 +42,34 @@ public class HorariosController {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private Timer timer;
 
-    private String nombreUsuario;
-    private double dineroUsuario;
+    private String emailUsuario; // Correo electrónico del usuario
+    private double dineroUsuario; // Saldo del usuario
     private String nombrePelicula;
     private double precioPelicula;
 
     /**
-     * Configura la información de la película y genera los horarios disponibles.
+     * Configura la información del usuario y la película.
      *
-     * @param rutaImagen      Ruta de la imagen de la película.
+     * @param emailUsuario    Correo electrónico del usuario.
      * @param titulo          Título de la película.
-     * @param duracionMinutos Duración de la película en minutos.
-     * @param nombreUsuario   Nombre del usuario.
-     * @param dineroUsuario   Dinero disponible del usuario.
      * @param precioPelicula  Precio de la película.
+     * @param duracionMinutos Duración de la película en minutos.
+     * @param rutaImagen      Ruta de la imagen de la película.
+     * @param dineroUsuario   Dinero disponible del usuario.
      */
-    public void configurarPelicula(String rutaImagen, String titulo, int duracionMinutos,
-                                   String nombreUsuario, double dineroUsuario, double precioPelicula) {
-        this.nombreUsuario = nombreUsuario;
-        this.dineroUsuario = dineroUsuario;
+    public void configurarDatosUsuario(String emailUsuario, String titulo, double precioPelicula, int duracionMinutos, String rutaImagen, double dineroUsuario) {
+        this.emailUsuario = emailUsuario; // Guarda el correo electrónico
         this.nombrePelicula = titulo;
         this.precioPelicula = precioPelicula;
+        this.dineroUsuario = dineroUsuario;
 
         // Configurar la imagen y el título
-        Imagen_Peli.setImage(new Image("file:" + rutaImagen));
+        try {
+            Image imagen = new Image("file:" + rutaImagen);
+            Imagen_Peli.setImage(imagen);
+        } catch (Exception e) {
+            Imagen_Peli.setImage(new Image("file:src/main/resources/default.jpg")); // Imagen por defecto si falla
+        }
         TituloPeli.setText(titulo);
 
         // Iniciar el reloj con la hora actual
@@ -155,7 +159,7 @@ public class HorariosController {
     /**
      * Muestra un mensaje de advertencia al usuario.
      *
-     * @param titulo Título del mensaje.
+     * @param titulo  Título del mensaje.
      * @param mensaje Contenido del mensaje.
      */
     private void mostrarMensajeAdvertencia(String titulo, String mensaje) {
@@ -180,7 +184,7 @@ public class HorariosController {
             AsientosController controller = loader.getController();
 
             // Pasar los datos al controlador
-            controller.configurarAsientos(nombreUsuario, dineroUsuario, nombrePelicula, precioPelicula, horarioSeleccionado);
+            controller.configurarAsientos(emailUsuario, dineroUsuario, nombrePelicula, precioPelicula, horarioSeleccionado);
 
             // Configurar y mostrar la nueva ventana
             Stage stage = new Stage();
@@ -189,6 +193,9 @@ public class HorariosController {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();
+
+            Stage thisStage = (Stage) horaActual.getScene().getWindow();
+            thisStage.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

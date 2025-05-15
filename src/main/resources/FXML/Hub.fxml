@@ -58,7 +58,7 @@
          </font>
       </Text>
       <Button fx:id="btm_crear" layoutX="41.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #1DB00D; -fx-border-color: black;" />
-      <ImageView fitHeight="73.0" fitWidth="75.0" layoutX="101.0" layoutY="515.0">
+      <ImageView fx:id="img_crear" fitHeight="73.0" fitWidth="75.0" layoutX="101.0" layoutY="515.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/412785.png" />
          </image>
@@ -68,7 +68,7 @@
             <Font name="House M.D." size="18.0" />
          </font>
       </Text>
-      <ImageView fitHeight="65.0" fitWidth="69.0" layoutX="331.0" layoutY="518.0">
+      <ImageView fx:id="img_eliminar" fitHeight="65.0" fitWidth="69.0" layoutX="331.0" layoutY="518.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/1214594.png" />
          </image>
@@ -78,7 +78,7 @@
             <Font name="House M.D." size="18.0" />
          </font>
       </Text>
-      <ImageView fitHeight="73.0" fitWidth="69.0" layoutX="553.0" layoutY="514.0">
+      <ImageView fx:id="img_modificar" fitHeight="73.0" fitWidth="69.0" layoutX="553.0" layoutY="514.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/32355.png" />
          </image>
