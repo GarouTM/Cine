@@ -173,6 +173,61 @@ public class LN_Peliculas {
         }
     }
 
+    public void actualizarPelicula(Pelicula peliculaActualizada) {
+        try {
+            if (peliculaActualizada == null) {
+                throw new IllegalArgumentException("La película actualizada no puede ser nula.");
+            }
+
+            // Obtener la película original desde la base de datos
+            Pelicula peliculaOriginal = peliculaDAO.obtenerPorId(peliculaActualizada.getId());
+            if (peliculaOriginal == null) {
+                throw new IllegalArgumentException("La película no existe en la base de datos.");
+            }
+
+            // Usar los valores originales si los nuevos valores no están disponibles
+            String titulo = (peliculaActualizada.getTitulo() == null || peliculaActualizada.getTitulo().trim().isEmpty())
+                    ? peliculaOriginal.getTitulo() : peliculaActualizada.getTitulo();
+
+            String director = (peliculaActualizada.getDirector() == null || peliculaActualizada.getDirector().trim().isEmpty())
+                    ? peliculaOriginal.getDirector() : peliculaActualizada.getDirector();
+
+            int anio = peliculaActualizada.getAnio() == 0
+                    ? peliculaOriginal.getAnio() : peliculaActualizada.getAnio();
+
+            String genero = (peliculaActualizada.getGenero() == null || peliculaActualizada.getGenero().trim().isEmpty())
+                    ? peliculaOriginal.getGenero() : peliculaActualizada.getGenero();
+
+            double duracion = peliculaActualizada.getDuracion() == 0
+                    ? peliculaOriginal.getDuracion() : peliculaActualizada.getDuracion();
+
+            String descripcion = (peliculaActualizada.getDescripcion() == null || peliculaActualizada.getDescripcion().trim().isEmpty())
+                    ? peliculaOriginal.getDescripcion() : peliculaActualizada.getDescripcion();
+
+            String rutaImagen = (peliculaActualizada.getRutaImagen() == null || peliculaActualizada.getRutaImagen().trim().isEmpty())
+                    ? peliculaOriginal.getRutaImagen() : peliculaActualizada.getRutaImagen();
+
+            // Crear un nuevo objeto Pelicula con los valores finales
+            Pelicula peliculaFinal = new Pelicula(
+                    peliculaOriginal.getId(), // ID no cambia
+                    titulo,
+                    director,
+                    anio,
+                    genero,
+                    duracion,
+                    descripcion,
+                    rutaImagen
+            );
+
+            // Llamar al método modificar del DAO
+            peliculaDAO.modificar(peliculaFinal);
+            mostrarAlerta("Éxito", "Película actualizada correctamente.", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al actualizar la película: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);

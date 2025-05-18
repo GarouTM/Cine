@@ -1,6 +1,7 @@
 package controller;
 
 import Logica_de_Negocio.LN_Peliculas;
+import Logica_de_Negocio.LN_Usuarios;
 import dao.UsuarioDAOImpl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -22,6 +23,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import modelo.Usuario;
 
 public class HubUController {
 
@@ -40,6 +45,28 @@ public class HubUController {
     @FXML
     private Button btm_eliminar;
 
+    @FXML
+    private Button btm_modificar;
+
+    @FXML
+    private ImageView img_crear;
+
+    @FXML
+    private ImageView img_eliminar;
+
+    @FXML
+    private ImageView img_modificar;
+
+    @FXML
+    private Button Btm_opc;
+
+    @FXML
+    private Button btm_añadir_dinero;
+
+    private final LN_Usuarios lnUsuarios = new LN_Usuarios();
+
+    private Usuario usuarioActivo;
+
     private final LN_Peliculas lnPeliculas = new LN_Peliculas();
     private String emailUsuario; // Correo electrónico del usuario
     private double dineroUsuario;
@@ -49,11 +76,43 @@ public class HubUController {
 
     @FXML
     public void initialize() {
+        configurarBotonesAdministrador();
         cargarPeliculas();
         btm_crear.setOnAction(event -> abrirCrearPelicula());
         btm_eliminar.setOnAction(event -> eliminarPS());
+        btm_añadir_dinero.setOnAction(event -> abrirDinero());
+        btm_modificar.setOnAction(event -> abrirModificarPelicula());
         aplicarEstiloCSS();
         iniciarActualizacionSaldo();
+
+        configurarBotonOpciones();
+    }
+
+    public void setEmailUsuario(String emailUsuario) {
+        if (emailUsuario == null || emailUsuario.isEmpty()) {
+            mostrarError("El correo electrónico no puede estar vacío.");
+            return;
+        }
+        this.emailUsuario = emailUsuario;
+    }
+
+    public void setUsuarioActivo(Usuario usuario) {
+        if (usuario == null) {
+            mostrarError("El usuario es inválido. Por favor, inicie sesión nuevamente.");
+            return;
+        }
+
+        this.usuarioActivo = usuario;
+
+        // Actualizar la interfaz de usuario con la información del usuario activo
+        Label_Nombre.setText("Usuario: " + usuario.getNombreCompleto());
+        Label_Dinero.setText(String.format("Dinero: $%.2f", usuario.getSaldo()));
+
+        // Actualizar campos relacionados, si los hay
+        this.emailUsuario = usuario.getGmail();
+        this.dineroUsuario = usuario.getSaldo();
+
+
     }
 
     /**
@@ -216,6 +275,53 @@ public class HubUController {
     }
 
 
+    /**
+     * Abre la ventana para modificar una película seleccionada.
+     */
+    private void abrirModificarPelicula() {
+        if (peliculaSeleccionada == null) {
+            mostrarError("Por favor, seleccione una película para modificar.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/ModificarP.fxml"));
+            Parent root = loader.load();
+
+            ModificarPController controller = loader.getController();
+            controller.configurarPelicula(peliculaSeleccionada, this);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Modificar Película");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            cargarPeliculas(); // Recargar la lista de películas después de modificar
+        } catch (IOException e) {
+            mostrarError("No se pudo abrir la ventana de Modificar Película: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Metodo para guardar los cambios realizados en una película.
+     *
+     * @param pelicula Película con los datos actualizados.
+     */
+    public void guardarCambiosPelicula(Pelicula pelicula) {
+        try {
+            // Actualizar la película en la base de datos o lógica de negocio
+            lnPeliculas.actualizarPelicula(pelicula);
+            mostrarMensajeExito("Éxito", "La película ha sido modificada correctamente.");
+
+        } catch (Exception e) {
+            mostrarError("Error al guardar cambios en la película: " + e.getMessage());
+        }
+    }
+
+
 
     /**
      * Abre la ventana de selección de horarios para la película seleccionada.
@@ -273,6 +379,38 @@ public class HubUController {
         }
     }
 
+    /**
+     * Configura el botón de opciones para mostrar un menú desplegable.
+     */
+    private void configurarBotonOpciones() {
+        // Crear el menú contextual
+        ContextMenu contextMenu = new ContextMenu();
+
+        // Opción: Modo Oscuro
+        CheckMenuItem modoOscuroItem = new CheckMenuItem("Modo Oscuro");
+        modoOscuroItem.setOnAction(event -> {
+            if (modoOscuroItem.isSelected()) {
+                activarModoOscuro();
+            } else {
+                desactivarModoOscuro();
+            }
+        });
+
+        // Opción: Volver a la pantalla de inicio de sesión
+        MenuItem volverInicioSesionItem = new MenuItem("Volver a Inicio de Sesión");
+        volverInicioSesionItem.setOnAction(event -> volverPantallaILogin());
+
+        // Agregar las opciones al menú contextual
+        contextMenu.getItems().addAll(modoOscuroItem, volverInicioSesionItem);
+
+        // Asociar el menú contextual al botón de opciones
+        Btm_opc.setOnMouseClicked(event -> {
+            if (event.getButton().equals(javafx.scene.input.MouseButton.PRIMARY)) {
+                contextMenu.show(Btm_opc, event.getScreenX(), event.getScreenY());
+            }
+        });
+    }
+
     public void actualizarSaldo(double nuevoSaldo) {
         this.dineroUsuario = nuevoSaldo;
         Label_Dinero.setText(String.format("Dinero: $%.2f", nuevoSaldo));
@@ -294,6 +432,125 @@ public class HubUController {
     }
 
 
+    /**
+     * Activa el modo oscuro aplicando un estilo CSS.
+     */
+    private void activarModoOscuro() {
+        Scene scene = Flow_Pelis.getScene();
+        if (scene != null) {
+            String darkModeCss = getClass().getResource("/CSS/DarkMode.css").toExternalForm();
+            if (!scene.getStylesheets().contains(darkModeCss)) {
+                scene.getStylesheets().add(darkModeCss);
+            }
+        }
+    }
+
+    /**
+     * Desactiva el modo oscuro eliminando el estilo CSS.
+     */
+    private void desactivarModoOscuro() {
+        Scene scene = Flow_Pelis.getScene();
+        if (scene != null) {
+            String darkModeCss = getClass().getResource("/CSS/DarkMode.css").toExternalForm();
+            scene.getStylesheets().remove(darkModeCss);
+        }
+    }
+
+
+    /**
+     * Permite al usuario volver a la pantalla de inicio de sesión.
+     */
+    private void volverPantallaILogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Login.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) Btm_opc.getScene().getWindow();
+
+            // Configura la escena con el tamaño deseado
+            Scene scene = new Scene(root, 600.0, 450.0); // Ancho x Alto
+            stage.setScene(scene);
+
+            stage.setTitle("Inicio de Sesión");
+            stage.setResizable(false); // Deshabilita redimensionamiento
+            stage.setMaximized(false); // Asegura que no esté maximizado
+
+            // Establece el tamaño específico de la ventana
+            stage.setWidth(600.0);
+            stage.setHeight(450.0);
+        } catch (IOException e) {
+            mostrarError("No se pudo volver a la pantalla de inicio de sesión.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Abre la pestaña para agregar dinero.
+     */
+    private void abrirDinero() {
+        if (usuarioActivo == null) {
+            mostrarError("El usuario no está configurado. Por favor, inicie sesión nuevamente.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Dinero.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista Dinero
+            DineroController dineroController = loader.getController();
+
+            // Pasar los datos del usuario al controlador
+            dineroController.configurarDatos(usuarioActivo.getGmail(), usuarioActivo.getSaldo(), this);
+
+            // Configurar y mostrar la nueva ventana
+            Stage stage = new Stage();
+            stage.setTitle("Ingresar Dinero");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            mostrarError("No se pudo abrir la ventana de Dinero: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //El metodo para verificar que si entra como admin los botones de crear, eliminar y modificar estan disponibles
+    private void configurarBotonesAdministrador() {
+        if (emailUsuario == null || emailUsuario.isEmpty()) {
+            mostrarError("El correo electrónico no es válido.");
+            return;
+        }
+
+        // Verificar si el usuario es administrador
+        boolean esAdmin = emailUsuario.equalsIgnoreCase("admin@gmail.com");
+
+        // Configurar visibilidad y funcionalidad de botones
+        btm_crear.setVisible(esAdmin);
+        btm_crear.setManaged(esAdmin);
+        img_crear.setVisible(esAdmin);
+        img_crear.setManaged(esAdmin);
+
+        btm_eliminar.setVisible(esAdmin);
+        btm_eliminar.setManaged(esAdmin);
+        img_eliminar.setVisible(esAdmin);
+        img_eliminar.setManaged(esAdmin);
+
+        btm_modificar.setVisible(esAdmin);
+        btm_modificar.setManaged(esAdmin);
+        img_modificar.setVisible(esAdmin);
+        img_modificar.setManaged(esAdmin);
+
+        // Ajustar la altura de la ventana
+        Platform.runLater(() -> {
+            Stage stage = (Stage) Flow_Pelis.getScene().getWindow();
+            if (esAdmin) {
+                stage.setHeight(600); // Altura normal para admin
+            } else {
+                stage.setHeight(500); // Altura reducida para usuarios normales
+            }
+        });
+    }
 
     /**
      * Muestra un mensaje de error en la consola.
@@ -309,4 +566,13 @@ public class HubUController {
             alert.showAndWait();
         });
     }
+
+    private void mostrarMensajeExito(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
 }

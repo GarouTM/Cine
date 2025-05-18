@@ -12,12 +12,16 @@ public class MongoDBConnection {
     private static MongoDatabase database;
     private static Process mongoProcess;  // Añadimos una referencia al proceso
 
+    private static final String CONNECTION_URI = "mongodb+srv://kaiser:4n3LNd4Od0X7wbzl@cluster0.c8ctlqz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
     public static MongoDatabase getDatabase() {
         if (mongoClient == null) {
-            startMongoDB();
-            mongoClient = MongoClients.create("mongodb://localhost:27017");
+            // Crear un cliente MongoDB usando el URI para MongoDB Atlas
+            mongoClient = MongoClients.create(CONNECTION_URI);
+
+            // Conectarse a la base de datos "Cine" (cambia el nombre si es necesario)
             database = mongoClient.getDatabase("Cine");
-            System.out.println("Conexión establecida con MongoDB.");
+            System.out.println("Conexión establecida con MongoDB Atlas.");
         }
         return database;
     }

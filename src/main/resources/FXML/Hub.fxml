@@ -2,11 +2,13 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -17,7 +19,7 @@
       <!-- Barra Superior -->
       <HBox alignment="CENTER_LEFT" prefHeight="42.0" style="-fx-border-color: black; -fx-spacing: 20; -fx-background-color: #003465;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="Label_Nombre" prefHeight="27.0" prefWidth="182.0" textFill="WHITE">
+            <Label fx:id="Label_Nombre" prefHeight="27.0" prefWidth="236.0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
@@ -25,31 +27,55 @@
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
+            <Pane prefHeight="65.0" prefWidth="92.0">
+               <children>
+                  <Button fx:id="btm_añadir_dinero" layoutY="1.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="65.0" style="-fx-background-color: #3BB50F; -fx-border-color: black;" />
+                  <ImageView fitHeight="42.0" fitWidth="54.0" layoutX="6.0" layoutY="-1.0" mouseTransparent="true">
+                     <image>
+                        <Image url="@../org/example/final_cine_mrk2/dollar.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
             <Label fx:id="Label_ADMIN" text="Label" textFill="WHITE" visible="false">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
-            <Region prefHeight="41.0" prefWidth="222.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="Btm_opc" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" />
+            <Region prefHeight="41.0" prefWidth="214.0" HBox.hgrow="ALWAYS" />
+            <Pane prefHeight="41.0" prefWidth="131.0">
+               <children>
+                  <Button fx:id="Btm_opc" layoutX="32.0" layoutY="-7.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="54.0" />
+                  <ImageView fitHeight="42.0" fitWidth="44.0" layoutX="37.0" layoutY="-1.0" mouseTransparent="true">
+                     <image>
+                        <Image url="@../org/example/final_cine_mrk2/40031.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
       </HBox>
 
-      <!-- FlowPane para las películas -->
-      <FlowPane fx:id="Flow_Pelis" hgap="10.0" layoutX="11.0" layoutY="58.0" prefHeight="426.0" prefWidth="691.0" style="-fx-background-color: white; -fx-border-color: black;" vgap="10.0" AnchorPane.bottomAnchor="164.39999999999998" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.399999999999977" AnchorPane.topAnchor="58.0">
-         <children>
-            <!-- Ejemplo de una película -->
-            <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: #B3A900; -fx-border-width: 1;">
+      <!-- ScrollPane para manejo horizontal de películas -->
+      <ScrollPane fx:id="Scroll_Pelis" hbarPolicy="ALWAYS" layoutX="11.0" layoutY="58.0" prefHeight="426.0" prefWidth="691.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="164.39999999999998" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.399999999999977" AnchorPane.topAnchor="58.0">
+         <content>
+            <FlowPane fx:id="Flow_Pelis" hgap="10.0" orientation="HORIZONTAL" prefWrapLength="2000.0" style="-fx-background-color: white;" vgap="10.0">
                <children>
-                  <ImageView fx:id="imagen_peli" fitHeight="225.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="label_peli_titulo" text="Titulo" />
-                  <Label fx:id="label_peli_descripcion" text="Descripcion" />
-                  <Label fx:id="label_peli_genero" text="Genero" />
-                  <Label fx:id="label_peli_director" text="Director" />
-                  <Label fx:id="label_peli_duracion" text="Duracion" />
+                  <!-- Ejemplo de una película -->
+                  <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: #B3A900; -fx-border-width: 1;">
+                     <children>
+                        <ImageView fx:id="imagen_peli" fitHeight="225.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="label_peli_titulo" text="Titulo" />
+                        <Label fx:id="label_peli_descripcion" text="Descripcion" />
+                        <Label fx:id="label_peli_genero" text="Genero" />
+                        <Label fx:id="label_peli_director" text="Director" />
+                        <Label fx:id="label_peli_duracion" text="Duracion" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
-         </children>
-      </FlowPane>
+            </FlowPane>
+         </content>
+      </ScrollPane>
+
       <Button fx:id="btm_eliminar" layoutX="268.0" layoutY="511.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #8F0016; -fx-border-color: black;" />
       <Button fx:id="btm_modificar" layoutX="490.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #20009E; -fx-border-color: black;" />
       <Text layoutX="28.0" layoutY="499.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">

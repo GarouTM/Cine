@@ -80,6 +80,11 @@ public class LoginController implements Initializable {
             return;
         }
 
+        if (!email.endsWith("@gmail.com")) {
+            mostrarAlerta("Error", "El correo debe ser un Gmail válido (ejemplo@gmail.com).", Alert.AlertType.ERROR);
+            return;
+        }
+
         try {
             Usuario usuario = lnUsuarios.login(email, password);
             if (usuario != null) {
@@ -153,22 +158,20 @@ public class LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Hub.fxml"));
             Parent root = loader.load();
 
-            // Obtener el controlador del HUB
+            // Obtener el controlador del Hub
             HubUController hubController = loader.getController();
 
-            // Pasar los datos del usuario al HUB
-            hubController.configurarUsuario(usuario.getNombreCompleto(), usuario.getSaldo(), usuario.getGmail());
+            // Configurar el usuario en el Hub
+            hubController.setEmailUsuario(usuario.getGmail());
+            hubController.setUsuarioActivo(usuario);
 
-            // Mostrar el HUB
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("House Cinema");
             stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
-            mostrarAlerta("Error",
-                    "Error al abrir la ventana principal: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Error al abrir la ventana principal: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
