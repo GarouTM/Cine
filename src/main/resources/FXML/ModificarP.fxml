@@ -15,7 +15,7 @@
    <children>
       <ScrollPane layoutX="316.0" layoutY="14.0" prefHeight="373.0" prefWidth="270.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="815.0" prefWidth="270.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="815.0" prefWidth="270.0" style="-fx-background-color: white; -fx-border-color: black;">
                <children>
                   <Label layoutX="8.0" layoutY="8.0" text="Modificar  Pelicula">
                      <font>
@@ -26,20 +26,44 @@
                   <VBox alignment="CENTER" layoutX="24.0" layoutY="144.0" prefHeight="208.0" prefWidth="222.0" style="-fx-border-color: black;">
                      <children>
                         <ImageView fx:id="ImageView_1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="Btm_Imagen" mnemonicParsing="false" onAction="#insertarImagen" text="INSERTAR IMAGEN" />
+                        <Button fx:id="Btm_Imagen" mnemonicParsing="false" onAction="#insertarImagen" text="INSERTAR IMAGEN">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Button>
                      </children>
                   </VBox>
-                  <Text layoutX="24.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titulo:" />
-                  <Text layoutX="24.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen:" />
+                  <Text layoutX="24.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titulo:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
+                  <Text layoutX="24.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
                   <TextField fx:id="Text_Field_directorM" layoutX="24.0" layoutY="386.0" prefHeight="26.0" prefWidth="237.0" promptText="Nuevo Director" />
-                  <Text layoutX="22.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Director:" />
+                  <Text layoutX="22.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Director:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
                   <TextField fx:id="Text_Field_añoM" layoutX="24.0" layoutY="442.0" prefHeight="26.0" prefWidth="236.0" promptText="Nuevo Año" />
-                  <Text layoutX="28.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Año:" />
-                  <Text layoutX="24.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genero:" />
+                  <Text layoutX="28.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Año:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
+                  <Text layoutX="24.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genero:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
                   <TextField fx:id="Text_Field_generoM" layoutX="24.0" layoutY="500.0" prefHeight="26.0" prefWidth="234.0" promptText="Nuevo Genero" />
-                  <Text layoutX="20.0" layoutY="562.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion:" />
+                  <Text layoutX="20.0" layoutY="562.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion:">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Text>
                   <TextArea fx:id="Text_Area_descripM" layoutX="20.0" layoutY="566.0" prefHeight="154.0" prefWidth="238.0" promptText="Nueva Descripcion" />
-                  <Button fx:id="btm_confirmar" layoutX="58.0" layoutY="735.0" mnemonicParsing="false" onAction="#confirmarModificacion" prefHeight="55.0" prefWidth="153.0" text="CONFIRMAR" />
+                  <Button fx:id="btm_confirmar" layoutX="58.0" layoutY="735.0" mnemonicParsing="false" onAction="#confirmarModificacion" prefHeight="55.0" prefWidth="153.0" style="-fx-background-color: #bf2d2d; -fx-border-color: black;" text="CONFIRMAR">
+                     <font>
+                        <Font name="Verdana Pro Bold" size="13.0" />
+                     </font></Button>
                </children>
             </AnchorPane>
         </content>

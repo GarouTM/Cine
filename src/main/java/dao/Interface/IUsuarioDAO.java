@@ -15,6 +15,8 @@ public interface IUsuarioDAO {
 
     double obtenerSaldo(String gmail);
 
+    String obtenerContraseña(String gmail);
+
     List<Usuario> obtenerTodosUsuarios();
 
     boolean existeUsuario(String gmail);

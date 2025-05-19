@@ -13,19 +13,40 @@
    <children>
       <Pane layoutX="389.0" layoutY="56.0" prefHeight="451.0" prefWidth="290.0" style="-fx-border-color: black; -fx-background-color: white;">
          <children>
-            <Text layoutX="24.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre" />
+            <Text layoutX="31.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_Nombre" layoutX="27.0" layoutY="48.0" onAction="#Nombre" prefHeight="25.0" prefWidth="247.0" promptText="Solo letras y tener al menos 2 caracteres" />
-            <Text layoutX="24.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido" />
+            <Text layoutX="30.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Apellido">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_Apellido" layoutX="27.0" layoutY="110.0" onAction="#Apellido" prefHeight="25.0" prefWidth="247.0" promptText="Escriba el apellido por favor" />
-            <Text layoutX="32.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+            <Text layoutX="32.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_Email" layoutX="27.0" layoutY="160.0" onAction="#Email" prefHeight="25.0" prefWidth="247.0" promptText="Debe terminar por @gmail.com" />
-            <Text layoutX="30.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña" />
+            <Text layoutX="30.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_Contraseña" layoutX="27.0" layoutY="215.0" onAction="#Contraseña" prefHeight="25.0" prefWidth="247.0" promptText="Debe tener al menos 8 caracteres" />
-            <Text layoutX="27.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Escribe de nuevo la contraseña" />
+            <Text layoutX="27.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Escribe de nuevo la contraseña">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_VContraseña" layoutX="27.0" layoutY="273.0" onAction="#Verifica" prefHeight="25.0" prefWidth="247.0" promptText="Para confirmar que es la correcta" />
-            <Text layoutX="27.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saldo de la cuenta" />
+            <Text layoutX="27.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saldo de la cuenta">
+               <font>
+                  <Font name="Verdana Pro Bold" size="13.0" />
+               </font></Text>
             <TextField fx:id="TextField_Saldo" layoutX="27.0" layoutY="336.0" onAction="#Saldo" prefHeight="25.0" prefWidth="247.0" promptText="El saldo no puede ser negativo" />
-            <Button fx:id="btm_ConfirmaCuenta" layoutX="159.0" layoutY="392.0" mnemonicParsing="false" onAction="#Cuenta" prefHeight="38.0" prefWidth="115.0" text="Confirmar" />
+            <Button fx:id="btm_ConfirmaCuenta" layoutX="140.0" layoutY="383.0" mnemonicParsing="false" onAction="#Cuenta" prefHeight="47.0" prefWidth="134.0" style="-fx-background-color: #bf2d2d; -fx-border-color: black;" text="Confirmar">
+               <font>
+                  <Font name="Cooper Black" size="13.0" />
+               </font></Button>
          </children>
       </Pane>
       <Text layoutX="389.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creacion de Cuenta">

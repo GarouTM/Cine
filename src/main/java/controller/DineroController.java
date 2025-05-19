@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -18,6 +19,9 @@ public class DineroController {
 
     @FXML
     private TextField Text_field_Dinero_Ingresar;
+
+    @FXML
+    private PasswordField Text_field_Contraseña; // Campo para ingresar la contraseña
 
     @FXML
     private Button btm_confirmar;
@@ -62,6 +66,18 @@ public class DineroController {
                 return;
             }
 
+            // Validar la contraseña
+            String contraseña = Text_field_Contraseña.getText();
+            if (contraseña == null || contraseña.trim().isEmpty()) {
+                mostrarMensajeAdvertencia("Error", "Por favor, ingrese su contraseña.");
+                return;
+            }
+
+            if (!validarContraseña(emailUsuario, contraseña)) {
+                mostrarMensajeAdvertencia("Error", "La contraseña ingresada no es correcta.");
+                return;
+            }
+
             // Actualizar el saldo del usuario
             dineroUsuario += cantidadIngresar;
             Label_DineroUsuario.setText(String.format("Dinero: $%.2f", dineroUsuario));
@@ -82,6 +98,25 @@ public class DineroController {
             mostrarMensajeAdvertencia("Error", "Por favor, ingrese una cantidad válida.");
         } catch (Exception e) {
             mostrarMensajeAdvertencia("Error", "Ocurrió un error al ingresar el dinero: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Valida la contraseña ingresada con la contraseña almacenada para el usuario.
+     *
+     * @param emailUsuario Correo electrónico del usuario.
+     * @param contraseña   Contraseña ingresada por el usuario.
+     * @return true si la contraseña es correcta, false de lo contrario.
+     */
+    private boolean validarContraseña(String emailUsuario, String contraseña) {
+        try {
+            UsuarioDAOImpl usuarioDAO = new UsuarioDAOImpl();
+            String contraseñaAlmacenada = usuarioDAO.obtenerContraseña(emailUsuario);
+            return contraseñaAlmacenada != null && contraseñaAlmacenada.equals(contraseña);
+        } catch (Exception e) {
+            mostrarMensajeAdvertencia("Error", "No se pudo validar la contraseña.");
+            e.printStackTrace();
+            return false;
         }
     }
 

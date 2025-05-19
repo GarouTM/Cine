@@ -23,7 +23,7 @@
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
-            <Label fx:id="Label_Dinero" prefHeight="27.0" prefWidth="170.0" textFill="WHITE">
+            <Label fx:id="Label_Dinero" prefHeight="27.0" prefWidth="225.0" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font></Label>
@@ -78,7 +78,7 @@
 
       <Button fx:id="btm_eliminar" layoutX="268.0" layoutY="511.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #8F0016; -fx-border-color: black;" />
       <Button fx:id="btm_modificar" layoutX="490.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #20009E; -fx-border-color: black;" />
-      <Text layoutX="28.0" layoutY="499.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">
+      <Text fx:id="text_crear" layoutX="28.0" layoutY="499.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>
@@ -89,7 +89,7 @@
             <Image url="@../org/example/final_cine_mrk2/412785.png" />
          </image>
       </ImageView>
-      <Text layoutX="303.0" layoutY="498.0" text="Eliminar  " wrappingWidth="125.1956787109375">
+      <Text fx:id="text_elim" layoutX="303.0" layoutY="498.0" text="Eliminar  " wrappingWidth="125.1956787109375">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>
@@ -99,7 +99,7 @@
             <Image url="@../org/example/final_cine_mrk2/1214594.png" />
          </image>
       </ImageView>
-      <Text layoutX="516.0" layoutY="499.0" text="Modificar" wrappingWidth="143.595703125">
+      <Text fx:id="text_mod" layoutX="516.0" layoutY="499.0" text="Modificar" wrappingWidth="143.595703125">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>

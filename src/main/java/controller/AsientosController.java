@@ -66,7 +66,9 @@ public class AsientosController {
         // Crear un botón para cada asiento en la cuadrícula (5x5)
         for (int fila = 0; fila < 5; fila++) {
             for (int columna = 0; columna < 5; columna++) {
-                Button asiento = new Button("A");
+                String textoAsiento = (char) ('A' + fila) + String.valueOf(fila + 1) + String.valueOf(columna + 1);
+                Button asiento = new Button(textoAsiento);
+                asiento.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
                 asiento.getStyleClass().add("asiento-libre"); // Estilo inicial
                 asiento.setOnAction(event -> cambiarEstadoAsiento(asiento)); // Configurar acción al hacer clic
                 gridAsientos.add(asiento, columna, fila); // Añadir el asiento al GridPane
@@ -238,12 +240,14 @@ public class AsientosController {
         boolean seleccionado = estadoAsientos.get(asiento); // Obtener el estado actual del asiento
         if (seleccionado) {
             // Si estaba seleccionado, desmarcarlo
+            asiento.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
             asiento.getStyleClass().remove("asiento-seleccionado");
             asiento.getStyleClass().add("asiento-libre");
             estadoAsientos.put(asiento, false); // Actualizar el estado
             costeTotal -= costePorAsiento; // Restar el coste
         } else {
             // Si no estaba seleccionado, marcarlo
+            asiento.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;");
             asiento.getStyleClass().remove("asiento-libre");
             asiento.getStyleClass().add("asiento-seleccionado");
             estadoAsientos.put(asiento, true); // Actualizar el estado
@@ -294,4 +298,5 @@ public class AsientosController {
         });
         return asientos;
     }
+
 }

@@ -33,7 +33,7 @@
             </Text>
             <Button fx:id="btm_Login" layoutX="9.0" layoutY="285.0" mnemonicParsing="false" onAction="#entrar" prefHeight="32.0" prefWidth="224.0" style="-fx-background-color: #bf2d2d; -fx-border-color: black;" text="Log in">
                <font>
-                  <Font name="Roboto Regular" size="13.0" />
+                  <Font name="Cooper Black" size="13.0" />
                </font>
             </Button>
             <Text layoutX="30.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿No tienes cuenta?">

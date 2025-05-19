@@ -88,7 +88,7 @@ public class LoginController implements Initializable {
         try {
             Usuario usuario = lnUsuarios.login(email, password);
             if (usuario != null) {
-                manejarLoginExitoso(usuario, email);
+                manejarLoginExitoso(usuario, email); // Pasa el objeto Usuario
             } else {
                 manejarLoginFallido();
                 mostrarAlerta("Error", "Credenciales incorrectas", Alert.AlertType.ERROR);
@@ -158,11 +158,7 @@ public class LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Hub.fxml"));
             Parent root = loader.load();
 
-            // Obtener el controlador del Hub
             HubUController hubController = loader.getController();
-
-            // Configurar el usuario en el Hub
-            hubController.setEmailUsuario(usuario.getGmail());
             hubController.setUsuarioActivo(usuario);
 
             Stage stage = new Stage();
@@ -170,6 +166,7 @@ public class LoginController implements Initializable {
             stage.setTitle("House Cinema");
             stage.setMaximized(true);
             stage.show();
+
         } catch (IOException e) {
             mostrarAlerta("Error", "Error al abrir la ventana principal: " + e.getMessage(), Alert.AlertType.ERROR);
         }

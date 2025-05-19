@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.Pelicula;
@@ -58,6 +59,15 @@ public class HubUController {
     private ImageView img_modificar;
 
     @FXML
+    private Text text_crear;
+
+    @FXML
+    private Text text_elim;
+
+    @FXML
+    private Text text_mod;
+
+    @FXML
     private Button Btm_opc;
 
     @FXML
@@ -76,6 +86,7 @@ public class HubUController {
 
     @FXML
     public void initialize() {
+        configurarVentana();
         configurarBotonesAdministrador();
         cargarPeliculas();
         btm_crear.setOnAction(event -> abrirCrearPelicula());
@@ -88,31 +99,19 @@ public class HubUController {
         configurarBotonOpciones();
     }
 
-    public void setEmailUsuario(String emailUsuario) {
-        if (emailUsuario == null || emailUsuario.isEmpty()) {
-            mostrarError("El correo electrónico no puede estar vacío.");
-            return;
-        }
-        this.emailUsuario = emailUsuario;
-    }
-
     public void setUsuarioActivo(Usuario usuario) {
         if (usuario == null) {
-            mostrarError("El usuario es inválido. Por favor, inicie sesión nuevamente.");
+            mostrarError("El usuario no es válido. Por favor, inicie sesión nuevamente.");
             return;
         }
 
         this.usuarioActivo = usuario;
+        this.emailUsuario = usuario.getGmail();
 
-        // Actualizar la interfaz de usuario con la información del usuario activo
         Label_Nombre.setText("Usuario: " + usuario.getNombreCompleto());
         Label_Dinero.setText(String.format("Dinero: $%.2f", usuario.getSaldo()));
 
-        // Actualizar campos relacionados, si los hay
-        this.emailUsuario = usuario.getGmail();
-        this.dineroUsuario = usuario.getSaldo();
-
-
+        configurarBotonesAdministrador();
     }
 
     /**
@@ -518,7 +517,7 @@ public class HubUController {
     //El metodo para verificar que si entra como admin los botones de crear, eliminar y modificar estan disponibles
     private void configurarBotonesAdministrador() {
         if (emailUsuario == null || emailUsuario.isEmpty()) {
-            mostrarError("El correo electrónico no es válido.");
+            System.err.println("Advertencia: El correo electrónico no está configurado. Configurando los botones como usuario estándar.");
             return;
         }
 
@@ -530,16 +529,22 @@ public class HubUController {
         btm_crear.setManaged(esAdmin);
         img_crear.setVisible(esAdmin);
         img_crear.setManaged(esAdmin);
+        text_crear.setVisible(esAdmin);
+        text_crear.setManaged(esAdmin);
 
         btm_eliminar.setVisible(esAdmin);
         btm_eliminar.setManaged(esAdmin);
         img_eliminar.setVisible(esAdmin);
         img_eliminar.setManaged(esAdmin);
+        text_elim.setVisible(esAdmin);
+        text_elim.setManaged(esAdmin);
 
         btm_modificar.setVisible(esAdmin);
         btm_modificar.setManaged(esAdmin);
         img_modificar.setVisible(esAdmin);
         img_modificar.setManaged(esAdmin);
+        text_mod.setVisible(esAdmin);
+        text_mod.setManaged(esAdmin);
 
         // Ajustar la altura de la ventana
         Platform.runLater(() -> {
@@ -551,6 +556,29 @@ public class HubUController {
             }
         });
     }
+
+    private void configurarVentana() {
+        Flow_Pelis.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (newScene != null) {
+                Platform.runLater(() -> {
+                    Stage stage = (Stage) Flow_Pelis.getScene().getWindow();
+
+                    // Configurar el tamaño fijo de la ventana
+                    stage.setWidth(1400);
+                    stage.setHeight(837);
+
+                    // Centrar la ventana en la pantalla
+                    stage.centerOnScreen();
+
+                    // Deshabilitar maximización
+                    stage.setResizable(false);
+                });
+            }
+        });
+    }
+
+
+
 
     /**
      * Muestra un mensaje de error en la consola.

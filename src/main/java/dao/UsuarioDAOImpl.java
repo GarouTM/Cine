@@ -120,6 +120,23 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
     }
 
     @Override
+    public String obtenerContraseña(String gmail) {
+        try {
+            // Buscar el usuario por su Gmail
+            Document doc = collection.find(Filters.eq("_id", gmail)).first();
+            if (doc == null) {
+                throw new RuntimeException("Usuario no encontrado: " + gmail);
+            }
+            // Retornar la contraseña
+            return doc.getString("gmailPassword");
+        } catch (MongoException e) {
+            throw new RuntimeException("Error de conexión con la base de datos: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al obtener la contraseña: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<Usuario> obtenerTodosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
         try {

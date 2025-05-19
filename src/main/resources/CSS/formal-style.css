@@ -1,0 +1,63 @@
+/* Estilo global para toda la aplicación */
+.root {
+    -fx-font-family: "Georgia"; /* Tipo de letra formal */
+    -fx-font-size: 14px;        /* Tamaño base */
+    -fx-text-fill: #333333;     /* Color del texto */
+}
+
+/* Estilo para etiquetas */
+.label {
+    -fx-font-family: "Times New Roman"; /* Fuente para etiquetas */
+    -fx-font-size: 16px;                /* Tamaño para etiquetas */
+    -fx-font-weight: bold;             /* Negrita */
+    -fx-text-fill: #000000;            /* Texto negro */
+}
+
+/* Estilo para botones */
+.button {
+    -fx-font-family: "Verdana";        /* Fuente para botones */
+    -fx-font-size: 14px;               /* Tamaño del texto */
+    -fx-font-weight: bold;             /* Negrita */
+    -fx-background-color: #0056b3;     /* Fondo azul */
+    -fx-text-fill: #ffffff;            /* Texto blanco */
+    -fx-border-color: #003d7a;         /* Borde azul oscuro */
+    -fx-border-width: 2px;             /* Grosor del borde */
+    -fx-border-radius: 5px;            /* Bordes redondeados */
+    -fx-background-radius: 5px;
+}
+
+/* Cambios al pasar el mouse sobre los botones */
+.button:hover {
+    -fx-background-color: #003d7a;     /* Fondo más oscuro */
+    -fx-text-fill: #ffffff;            /* Texto blanco */
+}
+
+/* Botones seleccionados */
+.button:pressed {
+    -fx-background-color: #00264d;    /* Fondo más oscuro al presionar */
+    -fx-text-fill: #dddddd;           /* Texto más claro */
+}
+
+/* Estilo para GridPane */
+.grid-pane {
+    -fx-background-color: #f9f9f9;    /* Fondo claro */
+    -fx-border-color: #cccccc;        /* Borde gris */
+    -fx-border-width: 2px;            /* Grosor del borde */
+}
+
+/* Estilo para los botones de los asientos */
+.asiento-libre {
+    -fx-background-color: #d4edda;    /* Verde claro */
+    -fx-border-color: #28a745;        /* Verde oscuro */
+    -fx-font-family: "Arial";         /* Fuente para asientos */
+    -fx-font-size: 12px;              /* Tamaño del texto */
+    -fx-font-weight: bold;            /* Negrita */
+}
+
+.asiento-seleccionado {
+    -fx-background-color: #f8d7da;    /* Rojo claro */
+    -fx-border-color: #dc3545;        /* Rojo oscuro */
+    -fx-font-family: "Arial";         /* Fuente para asientos */
+    -fx-font-size: 12px;              /* Tamaño del texto */
+    -fx-font-weight: bold;            /* Negrita */
+}

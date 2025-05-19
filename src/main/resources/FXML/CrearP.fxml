@@ -38,7 +38,10 @@
                   <Text layoutX="18.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genero:" />
                   <TextField fx:id="TextField_Genero" layoutX="14.0" layoutY="475.0" />
                   <Text layoutX="14.0" layoutY="578.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion:" />
-                  <Button fx:id="btm_confirmar" layoutX="36.0" layoutY="688.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="162.0" text="CONFIRMAR" />
+                  <Button fx:id="btm_confirmar" layoutX="36.0" layoutY="688.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="162.0" style="-fx-background-color: #bf2d2d; -fx-border-color: black;" text="CONFIRMAR">
+                     <font>
+                        <Font name="Cooper Black" size="13.0" />
+                     </font></Button>
                   <TextArea fx:id="Text_Area_Descripcion" layoutX="11.0" layoutY="588.0" prefHeight="89.0" prefWidth="206.0" />
                   <TextField fx:id="TextField_Duracion" layoutX="14.0" layoutY="526.0" />
                   <Text layoutX="17.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion:" />
