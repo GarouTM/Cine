@@ -44,8 +44,8 @@
             <Region prefHeight="41.0" prefWidth="214.0" HBox.hgrow="ALWAYS" />
             <Pane prefHeight="41.0" prefWidth="131.0">
                <children>
-                  <Button fx:id="Btm_opc" layoutX="32.0" layoutY="-7.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="54.0" />
-                  <ImageView fitHeight="42.0" fitWidth="44.0" layoutX="37.0" layoutY="-1.0" mouseTransparent="true">
+                  <Button fx:id="Btm_opc" layoutX="18.0" layoutY="-5.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="54.0" />
+                  <ImageView fitHeight="42.0" fitWidth="44.0" layoutX="23.0" layoutY="-1.0" mouseTransparent="true">
                      <image>
                         <Image url="@../org/example/final_cine_mrk2/40031.png" />
                      </image>
@@ -64,11 +64,26 @@
                   <VBox alignment="CENTER" prefHeight="346.0" prefWidth="194.0" style="-fx-background-color: white; -fx-padding: 10; -fx-spacing: 10; -fx-border-color: #B3A900; -fx-border-width: 1;">
                      <children>
                         <ImageView fx:id="imagen_peli" fitHeight="225.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="label_peli_titulo" text="Titulo" />
-                        <Label fx:id="label_peli_descripcion" text="Descripcion" />
-                        <Label fx:id="label_peli_genero" text="Genero" />
-                        <Label fx:id="label_peli_director" text="Director" />
-                        <Label fx:id="label_peli_duracion" text="Duracion" />
+                        <Label fx:id="label_peli_titulo" text="Titulo">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Label>
+                        <Label fx:id="label_peli_descripcion" text="Descripcion">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Label>
+                        <Label fx:id="label_peli_genero" text="Genero">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Label>
+                        <Label fx:id="label_peli_director" text="Director">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Label>
+                        <Label fx:id="label_peli_duracion" text="Duracion">
+                           <font>
+                              <Font name="Verdana Pro Bold" size="13.0" />
+                           </font></Label>
                      </children>
                   </VBox>
                </children>
@@ -76,35 +91,35 @@
          </content>
       </ScrollPane>
 
-      <Button fx:id="btm_eliminar" layoutX="268.0" layoutY="511.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #8F0016; -fx-border-color: black;" />
-      <Button fx:id="btm_modificar" layoutX="490.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #20009E; -fx-border-color: black;" />
-      <Text fx:id="text_crear" layoutX="28.0" layoutY="499.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">
+      <Button fx:id="btm_eliminar" layoutX="268.0" layoutY="475.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #8F0016; -fx-border-color: black;" />
+      <Button fx:id="btm_modificar" layoutX="489.0" layoutY="475.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #20009E; -fx-border-color: black;" />
+      <Text fx:id="text_crear" layoutX="28.0" layoutY="461.0" text="Crear  Pelicula" wrappingWidth="221.99566650390625">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>
       </Text>
-      <Button fx:id="btm_crear" layoutX="41.0" layoutY="512.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #1DB00D; -fx-border-color: black;" />
-      <ImageView fx:id="img_crear" fitHeight="73.0" fitWidth="75.0" layoutX="101.0" layoutY="515.0" mouseTransparent="true">
+      <Button fx:id="btm_crear" layoutX="41.0" layoutY="475.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="194.0" style="-fx-background-color: #1DB00D; -fx-border-color: black;" />
+      <ImageView fx:id="img_crear" fitHeight="73.0" fitWidth="75.0" layoutX="101.0" layoutY="481.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/412785.png" />
          </image>
       </ImageView>
-      <Text fx:id="text_elim" layoutX="303.0" layoutY="498.0" text="Eliminar  " wrappingWidth="125.1956787109375">
+      <Text fx:id="text_elim" layoutX="303.0" layoutY="460.0" text="Eliminar  " wrappingWidth="125.1956787109375">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>
       </Text>
-      <ImageView fx:id="img_eliminar" fitHeight="65.0" fitWidth="69.0" layoutX="331.0" layoutY="518.0" mouseTransparent="true">
+      <ImageView fx:id="img_eliminar" fitHeight="65.0" fitWidth="69.0" layoutX="331.0" layoutY="485.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/1214594.png" />
          </image>
       </ImageView>
-      <Text fx:id="text_mod" layoutX="516.0" layoutY="499.0" text="Modificar" wrappingWidth="143.595703125">
+      <Text fx:id="text_mod" layoutX="515.0" layoutY="461.0" text="Modificar" wrappingWidth="143.595703125">
          <font>
             <Font name="House M.D." size="18.0" />
          </font>
       </Text>
-      <ImageView fx:id="img_modificar" fitHeight="73.0" fitWidth="69.0" layoutX="553.0" layoutY="514.0" mouseTransparent="true">
+      <ImageView fx:id="img_modificar" fitHeight="73.0" fitWidth="69.0" layoutX="552.0" layoutY="481.0" mouseTransparent="true">
          <image>
             <Image url="@../org/example/final_cine_mrk2/32355.png" />
          </image>

@@ -219,7 +219,7 @@ public class LN_Peliculas {
                     rutaImagen
             );
 
-            // Llamar al método modificar del DAO
+            // Llamar al metodo modificar del DAO
             peliculaDAO.modificar(peliculaFinal);
             mostrarAlerta("Éxito", "Película actualizada correctamente.", Alert.AlertType.INFORMATION);
 

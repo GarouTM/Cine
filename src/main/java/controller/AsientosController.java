@@ -3,6 +3,8 @@ package controller;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
+import dao.Interface.IAsientoDAO;
+import dao.AsientoDAOImpl;
 import dao.UsuarioDAOImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -46,11 +48,11 @@ public class AsientosController {
     @FXML
     private Button confirmarButton;
 
-    private Map<Button, Boolean> estadoAsientos; // Mapa para guardar el estado de cada asiento (seleccionado o no)
-    private double costePorAsiento; // Precio por asiento basado en el precio de la película
-    private double costeTotal = 0.0; // Coste acumulado de los asientos seleccionados
+    private Map<Button, Boolean> estadoAsientos;
+    private double costePorAsiento;
+    private double costeTotal = 0.0;
 
-    private String emailUsuario; // Se cambió a "emailUsuario" para reflejar el correo electrónico
+    private String emailUsuario;
     private double dineroUsuario;
     private String nombrePelicula;
     private String horarioSeleccionado;
@@ -279,6 +281,9 @@ public class AsientosController {
         Label_DineroUsuario.setText(String.format("Dinero: $%.2f", dineroUsuario));
         Label_NombrePelicula.setText("Película: " + nombrePelicula);
         Label_horario.setText("Horario: " + horarioSeleccionado);
+
+        // Bloquear los asientos ocupados
+        bloquearAsientosOcupados();
     }
 
     /**
@@ -297,6 +302,39 @@ public class AsientosController {
             }
         });
         return asientos;
+    }
+
+
+    /**
+     * Bloquea los asientos que ya han sido comprados para la película y horario seleccionados.
+     */
+    private void bloquearAsientosOcupados() {
+        // Crear una instancia del DAO que implementa IAsientoDAO
+        AsientoDAOImpl asientosDAO = new AsientoDAOImpl();
+
+        // Recuperar los asientos ocupados desde la base de datos
+        List<String> asientosOcupados = asientosDAO.obtenerAsientosOcupados(nombrePelicula, horarioSeleccionado);
+
+        // Bloquear los asientos ocupados en la interfaz
+        estadoAsientos.forEach((asiento, seleccionado) -> {
+            String asientoCodigo = obtenerCodigoAsiento(asiento);
+            if (asientosOcupados.contains(asientoCodigo)) {
+                // Marcar el asiento como ocupado
+                asiento.setStyle("-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold;");
+                asiento.setDisable(true); // Deshabilitar el botón
+            }
+        });
+    }
+    /**
+     * Obtiene el código del asiento basado en su posición en la cuadrícula.
+     *
+     * @param asiento Botón del asiento.
+     * @return Código del asiento.
+     */
+    private String obtenerCodigoAsiento(Button asiento) {
+        int fila = GridPane.getRowIndex(asiento) + 1;
+        int columna = GridPane.getColumnIndex(asiento) + 1;
+        return (char) ('A' + fila - 1) + String.valueOf(columna);
     }
 
 }
