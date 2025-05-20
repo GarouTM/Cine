@@ -71,13 +71,17 @@ public class AsientoDAOImpl {
      */
     public List<String> obtenerAsientosOcupados(String pelicula, String horario) {
         try {
+            System.out.println("Consultando asientos ocupados para Película: " + pelicula + ", Horario: " + horario);
             Document doc = collection.find(Filters.and(
                     Filters.eq("pelicula", pelicula),
                     Filters.eq("horario", horario)
             )).first();
 
             if (doc != null) {
+                System.out.println("Documento encontrado: " + doc.toJson());
                 return doc.getList("asientosOcupados", String.class);
+            } else {
+                System.out.println("No se encontraron documentos para la consulta.");
             }
         } catch (Exception e) {
             System.err.println("Error al obtener asientos ocupados: " + e.getMessage());
