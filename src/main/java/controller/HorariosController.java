@@ -1,5 +1,7 @@
 package controller;
 
+import dao.AsientoDAOImpl;
+import dao.Interface.IAsientoDAO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -108,6 +111,19 @@ public class HorariosController {
         btm_h1.setText(baseHora.format(timeFormatter));
         btm_h2.setText(baseHora.plusMinutes(duracionMinutos + 20).format(timeFormatter));
         btm_h3.setText(baseHora.plusMinutes((duracionMinutos + 20) * 2).format(timeFormatter));
+
+        limpiarTextoBotones();
+    }
+
+    private void limpiarTextoBotones() {
+        btm_h1.setText(btm_h1.getText().trim());
+        btm_h2.setText(btm_h2.getText().trim());
+        btm_h3.setText(btm_h3.getText().trim());
+    }
+
+
+    private String limpiarTexto(String texto) {
+        return texto.trim(); // Elimina espacios adicionales
     }
 
     /**
@@ -134,6 +150,15 @@ public class HorariosController {
         verificarHorario(btm_h3.getText());
     }
 
+    private boolean esHorarioValido(String horarioTexto) {
+        try {
+            LocalTime.parse(horarioTexto, timeFormatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * Verifica si el horario seleccionado es válido en comparación con la hora actual.
      * Si no es válido, muestra un mensaje de advertencia.
@@ -143,8 +168,15 @@ public class HorariosController {
      */
     private void verificarHorario(String horarioTexto) {
         try {
-            LocalTime horarioSeleccionado = LocalTime.parse(horarioTexto, timeFormatter);
+            System.out.println("Texto del horario antes de limpiar: " + horarioTexto); // Depuración
+            String horarioLimpio = limpiarTexto(horarioTexto);
+            System.out.println("Texto del horario después de limpiar: " + horarioLimpio); // Depuración
+
+            LocalTime horarioSeleccionado = LocalTime.parse(horarioLimpio, timeFormatter);
+            System.out.println("Horario seleccionado: " + horarioSeleccionado); // Depuración
+
             LocalTime ahora = LocalTime.now(ZoneId.of("Europe/Madrid"));
+            System.out.println("Hora actual: " + ahora); // Depuración
 
             if (ahora.isAfter(horarioSeleccionado)) {
                 mostrarMensajeAdvertencia("Lo sentimos", "La función ya ha comenzado o ha terminado. Seleccione otro horario o vuelva mañana.");
@@ -152,9 +184,12 @@ public class HorariosController {
                 abrirSeleccionAsientos(horarioTexto);
             }
         } catch (Exception e) {
-            mostrarMensajeAdvertencia("Error", "El formato del horario no es válido.");
+            System.out.println("Error al verificar el horario: " + e.getMessage()); // Depuración del error
+            mostrarMensajeAdvertencia("Error", "Ocurrió un error inesperado al verificar el horario.");
+            e.printStackTrace();
         }
     }
+
 
     /**
      * Muestra un mensaje de advertencia al usuario.
@@ -183,6 +218,19 @@ public class HorariosController {
             // Obtener el controlador asociado al archivo FXML
             AsientosController controller = loader.getController();
 
+            // Inyectar la dependencia de asientosDAO
+            controller.setAsientosDAO(new IAsientoDAO() {
+                @Override
+                public void registrarAsientos(String pelicula, String horario, List<String> asientosOcupados) {
+
+                }
+
+                @Override
+                public List<String> obtenerAsientosOcupados(String pelicula, String horario) {
+                    return List.of();
+                }
+            });
+
             // Pasar los datos al controlador
             controller.configurarAsientos(emailUsuario, dineroUsuario, nombrePelicula, precioPelicula, horarioSeleccionado);
 
@@ -194,13 +242,13 @@ public class HorariosController {
             stage.setResizable(false);
             stage.showAndWait();
 
+            // Cerrar la ventana actual
             Stage thisStage = (Stage) horaActual.getScene().getWindow();
             thisStage.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     /**
      * Detiene el reloj cuando se cierra la ventana.
      */

@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 public class AsientosController {
 
+    private IAsientoDAO asientosDAO;
     private HubUController hubController;
 
     @FXML
@@ -59,6 +61,10 @@ public class AsientosController {
 
     public void setHubController(HubUController hubController) {
         this.hubController = hubController;
+    }
+
+    public void setAsientosDAO(IAsientoDAO asientosDAO) {
+        this.asientosDAO = asientosDAO;
     }
 
     @FXML
@@ -101,11 +107,22 @@ public class AsientosController {
         dineroUsuario -= costeTotal;
         Label_DineroUsuario.setText(String.format("Dinero: $%.2f", dineroUsuario));
 
-        // Actualizar la base de datos
+        // Actualizar la base de datos para el saldo del usuario
         actualizarSaldoEnBaseDeDatos(emailUsuario, dineroUsuario);
 
+        // Guardar los asientos seleccionados en la base de datos
+        List<String> asientosSeleccionados = obtenerAsientosSeleccionados();
+        try {
+            System.out.println("Guardando asientos seleccionados: " + asientosSeleccionados);
+            asientosDAO.registrarAsientos(nombrePelicula, horarioSeleccionado, asientosSeleccionados);
+            System.out.println("Asientos guardados correctamente en la base de datos.");
+        } catch (Exception e) {
+            estadoLabel.setText("Error al guardar los asientos en la base de datos.");
+            e.printStackTrace();
+            return; // Finalizar si ocurre un error
+        }
 
-        // Actualizar el saldo en HubUController
+        // Actualizar el saldo en HubUController si está disponible
         if (hubController != null) {
             hubController.actualizarSaldo(dineroUsuario);
         }
@@ -309,19 +326,12 @@ public class AsientosController {
      * Bloquea los asientos que ya han sido comprados para la película y horario seleccionados.
      */
     private void bloquearAsientosOcupados() {
-        // Crear una instancia del DAO que implementa IAsientoDAO
-        AsientoDAOImpl asientosDAO = new AsientoDAOImpl();
-
-        // Recuperar los asientos ocupados desde la base de datos
         List<String> asientosOcupados = asientosDAO.obtenerAsientosOcupados(nombrePelicula, horarioSeleccionado);
-
-        // Bloquear los asientos ocupados en la interfaz
         estadoAsientos.forEach((asiento, seleccionado) -> {
             String asientoCodigo = obtenerCodigoAsiento(asiento);
             if (asientosOcupados.contains(asientoCodigo)) {
-                // Marcar el asiento como ocupado
                 asiento.setStyle("-fx-background-color: gray; -fx-text-fill: white; -fx-font-weight: bold;");
-                asiento.setDisable(true); // Deshabilitar el botón
+                asiento.setDisable(true);
             }
         });
     }

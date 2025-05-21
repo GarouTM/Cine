@@ -30,15 +30,15 @@
                     <VBox spacing="10">
                         <Button fx:id="btm_h1" onAction="#horaPeli1" prefWidth="150" text="Horario 1">
                      <font>
-                        <Font name="Verdana Pro Bold" size="13.0" />
+                        <Font size="13.0" />
                      </font></Button>
                         <Button fx:id="btm_h2" onAction="#horaPeli2" prefWidth="150" text="Horario 2">
                      <font>
-                        <Font name="Verdana Pro Bold" size="13.0" />
+                        <Font size="13.0" />
                      </font></Button>
                         <Button fx:id="btm_h3" onAction="#horaPeli3" prefWidth="150" text="Horario 3">
                      <font>
-                        <Font name="Verdana Pro Bold" size="13.0" />
+                        <Font size="13.0" />
                      </font></Button>
                     </VBox>
                 </VBox>
