@@ -1,8 +1,11 @@
-module org.example.final_cine_mrk2 {
+module Final_Cine_Mrk2 {
+    // Requiere módulos de JavaFX para la interfaz gráfica
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
     requires javafx.web;
 
+    // Requiere librerías externas que usas en tu proyecto
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
@@ -16,9 +19,14 @@ module org.example.final_cine_mrk2 {
     requires org.mongodb.bson;
     requires com.github.librepdf.openpdf;
 
-    opens Main to javafx.graphics, javafx.fxml;
-    opens controller to javafx.fxml;
-    opens modelo to javafx.base;
-    opens org.example.final_cine_mrk2 to javafx.fxml;
-    exports org.example.final_cine_mrk2;
+    // Abre paquetes específicos para reflexión (usado por JavaFX y otras librerías)
+    opens Main to javafx.graphics, javafx.fxml; // Paquete donde está Main.java
+    opens controller to javafx.fxml;           // Ajusta si tienes controladores en el paquete "controller"
+    opens modelo to javafx.base;               // Ajusta si tienes modelos en el paquete "modelo"
+    opens FXML to javafx.fxml;                 // Ajusta si tienes archivos FXML en un paquete llamado "FXML"
+
+    // Exporta paquetes necesarios para otros módulos
+    exports Main;     // Exporta el paquete Main
+    exports controller;
+    exports modelo;
 }
